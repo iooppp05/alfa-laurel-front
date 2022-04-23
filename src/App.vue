@@ -20,7 +20,9 @@
             </v-list-item>
             <v-list-item :key="4" link>
               <v-list-item-title>
-                <v-icon v-text="'mdi-badge-account-horizontal-outline'"></v-icon>
+                <v-icon
+                  v-text="'mdi-badge-account-horizontal-outline'"
+                ></v-icon>
                 Roles
               </v-list-item-title>
             </v-list-item>
@@ -44,36 +46,57 @@
     </v-navigation-drawer>
 
     <v-app-bar v-if="authenticated" color="primary" clipped-left app>
-      <v-app-bar-nav-icon
-        class="white--text"
-        @click="
-          $store.commit(
-            'settings/TOGGLE_DRAWER',
-            !$store.state.settings.drawerState
-          )
-        "
-      ></v-app-bar-nav-icon>
-      <v-toolbar-title class="white--text">
-        Instituto Alfa Laurel</v-toolbar-title
-      >
-      <v-spacer></v-spacer>
-      <v-tooltip v-if="!$vuetify.theme.dark" bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on" color="secondary" dark small @click="darkMode">
-            <v-icon color="primary">mdi-lightbulb-off-outline</v-icon>
-          </v-btn>
-        </template>
-        <span>Desactivar modo día</span>
-      </v-tooltip>
-
-      <v-tooltip v-else bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on" color="primary" small @click="darkMode">
-            <v-icon color="secondary">mdi-lightbulb-on-outline</v-icon>
-          </v-btn>
-        </template>
-        <span>Activar modo día</span>
-      </v-tooltip>
+      <v-toolbar-title class="order-lg-1 order-md-1 order-sm-2 order-2">
+        <h5 class="white--text text-body-1 ml-xs-8">
+          <span>Instituto</span> Alfa Laurel
+        </h5>
+      </v-toolbar-title>
+      <div class="order-lg-2 order-md-2 order-sm-1 order-1">
+        <v-app-bar-nav-icon
+          class="white--text order-1"
+          @click="
+            $store.commit(
+              'settings/TOGGLE_DRAWER',
+              !$store.state.settings.drawerState
+            )
+          "
+        ></v-app-bar-nav-icon>
+      </div>
+      <v-spacer class="order-3"></v-spacer>
+      <div class="order-4">
+        <v-tooltip v-if="!$vuetify.theme.dark" bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              v-on="on"
+              color="secondary"
+              fab
+              plain
+              small
+              outlined
+              @click="darkMode"
+            >
+              <v-icon color="secondary">mdi-lightbulb-off-outline</v-icon>
+            </v-btn>
+          </template>
+          <span>Desactivar modo día</span>
+        </v-tooltip>
+        <v-tooltip v-else bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              v-on="on"
+              color="secondary"
+              fab
+              plain
+              small
+              outlined
+              @click="darkMode"
+            >
+              <v-icon color="secondary">mdi-lightbulb-on-outline</v-icon>
+            </v-btn>
+          </template>
+          <span>Activar modo día</span>
+        </v-tooltip>
+      </div>
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
