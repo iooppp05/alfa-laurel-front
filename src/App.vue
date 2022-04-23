@@ -64,38 +64,36 @@
       </div>
       <v-spacer class="order-3"></v-spacer>
       <div class="order-4">
-        <v-tooltip v-if="!$vuetify.theme.dark" bottom>
-          <template v-slot:activator="{ on }">
+        <v-menu transition="slide-x-transition" bottom right offset-y>
+          <template v-slot:activator="{ on, attrs }">
             <v-btn
+              icon
+              v-bind="attrs"
               v-on="on"
               color="secondary"
               fab
               plain
               small
               outlined
-              @click="darkMode"
             >
-              <v-icon color="secondary">mdi-lightbulb-off-outline</v-icon>
+              {{ userAvatar }}
             </v-btn>
           </template>
-          <span>Desactivar modo día</span>
-        </v-tooltip>
-        <v-tooltip v-else bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-              v-on="on"
-              color="secondary"
-              fab
-              plain
-              small
-              outlined
-              @click="darkMode"
-            >
-              <v-icon color="secondary">mdi-lightbulb-on-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Activar modo día</span>
-        </v-tooltip>
+          <v-list>
+            <v-list-item to="/edit-account" link>
+              <v-list-item-title>
+                <v-icon v-text="'mdi-account-circle-outline'"></v-icon>
+                Cuenta</v-list-item-title
+              >
+            </v-list-item>
+            <v-list-item @click.stop="$store.dispatch('auth/logout')" link>
+              <v-list-item-title>
+                <v-icon v-text="'mdi-logout'"></v-icon>
+                Salir</v-list-item-title
+              >
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </div>
     </v-app-bar>
 
@@ -122,6 +120,9 @@ export default {
     };
   },
   computed: {
+    userAvatar() {
+      return this.$store.getters["auth/userAvatar"];
+    },
     authenticated() {
       return this.$store.state.auth.logged;
     },

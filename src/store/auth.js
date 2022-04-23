@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "@/router";
 
 export default {
   namespaced: true,
@@ -35,10 +36,11 @@ export default {
         commit("SET_TOKEN", null);
       }
     },
-    async logout({ dispatch, commit }) {
+    async logout({ state, commit }) {
       await axios.post("/logout");
       commit("SET_USER", null);
-      await dispatch("me");
+      commit("SET_LOGGED", false);
+      if (!state.user) await router.push("/login");
     },
     async token_logout({ commit }) {
       commit("SET_TOKEN", null);
@@ -53,6 +55,11 @@ export default {
         commit("SET_LOGGED", false);
         commit("SET_USER", null);
       }
+    },
+  },
+  getters: {
+    userAvatar(state) {
+      if (state.user) return state.user.name[0] + state.user.paternal_name[0];
     },
   },
 };
