@@ -7,6 +7,7 @@ export default {
     logged: false,
     user: null,
     token: window.localStorage.getItem("token"),
+    roles: null,
   },
   mutations: {
     SET_LOGGED(state, logged) {
@@ -18,6 +19,9 @@ export default {
     SET_TOKEN(state, token) {
       state.token = token;
       window.localStorage.setItem("token", token);
+    },
+    SET_ROLES(state, roles) {
+      state.roles = roles;
     },
   },
   actions: {
@@ -40,6 +44,7 @@ export default {
       await axios.post("/logout");
       commit("SET_USER", null);
       commit("SET_LOGGED", false);
+      commit("SET_ROLES", null);
       if (!state.user) await router.push("/login");
     },
     async token_logout({ commit }) {
@@ -51,6 +56,7 @@ export default {
         const { data } = await axios.get("/api/user");
         commit("SET_LOGGED", true);
         commit("SET_USER", data);
+        commit("SET_ROLES", data.roles);
       } catch (e) {
         commit("SET_LOGGED", false);
         commit("SET_USER", null);
@@ -60,6 +66,9 @@ export default {
   getters: {
     userAvatar(state) {
       if (state.user) return state.user.name[0] + state.user.paternal_name[0];
+    },
+    isAdmin(state) {
+      return !!state.roles.some((role) => role.name === "admin");
     },
   },
 };

@@ -9,24 +9,20 @@ const routes = [
   {
     path: "/",
     name: "Home",
+    meta: { role: store.state.auth.role },
     component: Home,
-    beforeEnter: async (to, from, next) => {
-      if (to.name !== "Login" && !store.state.auth.logged)
-        next({ name: "Login" });
-      else next();
-    },
-    children: [
-      {
-        name: "Admin",
-        path: "/admin",
-        component: () => import("../views/Admin.vue"),
-      },
-      {
-        name: "Exam",
-        path: "/examen",
-        component: () => import("../views/Exam.vue"),
-      },
-    ],
+  },
+  {
+    name: "Exam",
+    path: "/examen",
+    meta: { role: JSON.stringify(store.state.auth.roles) },
+    component: () => import("../views/Exam.vue"),
+  },
+  {
+    name: "Admin",
+    path: "/admin",
+    meta: { role: store.state.auth.role },
+    component: () => import("../views/Admin.vue"),
   },
   {
     path: "/login",
@@ -42,5 +38,8 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-
+router.beforeEach((to, from, next) => {
+  if (to.name !== "Login" && !store.state.auth.logged) next({ name: "Login" });
+  else next();
+});
 export default router;

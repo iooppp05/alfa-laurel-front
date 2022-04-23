@@ -83,7 +83,7 @@
             <v-list-item to="/edit-account" link>
               <v-list-item-title>
                 <v-icon v-text="'mdi-account-circle-outline'"></v-icon>
-                Cuenta</v-list-item-title
+                Mi cuenta</v-list-item-title
               >
             </v-list-item>
             <v-list-item @click.stop="$store.dispatch('auth/logout')" link>
@@ -139,9 +139,6 @@ export default {
     },
     links() {
       return this.$store.state.settings.links;
-    },
-    adminLinks() {
-      return this.$store.state.settings.adminLinks;
     },
   },
   methods: {

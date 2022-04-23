@@ -39,7 +39,9 @@ export default {
   methods: {
     async submit() {
       await this.$store.dispatch("auth/login", this.credentials);
-      await this.$router.replace({ name: "Admin" });
+      await this.$router.replace({
+        name: this.$store.getters["auth/isAdmin"] ? "Admin" : "Home",
+      });
     },
   },
 };
