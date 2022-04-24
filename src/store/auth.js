@@ -8,6 +8,7 @@ export default {
     user: null,
     token: window.localStorage.getItem("token"),
     roles: null,
+    permissions: null,
   },
   mutations: {
     SET_LOGGED(state, logged) {
@@ -22,6 +23,9 @@ export default {
     },
     SET_ROLES(state, roles) {
       state.roles = roles;
+    },
+    SET_PERMISSIONS(state, permissions) {
+      state.permissions = permissions;
     },
   },
   actions: {
@@ -45,6 +49,7 @@ export default {
       commit("SET_USER", null);
       commit("SET_LOGGED", false);
       commit("SET_ROLES", null);
+      commit("SET_PERMISSIONS", null);
       if (!state.user) await router.push("/login");
     },
     async token_logout({ commit }) {
@@ -57,6 +62,7 @@ export default {
         commit("SET_LOGGED", true);
         commit("SET_USER", data);
         commit("SET_ROLES", data.roles);
+        commit("SET_PERMISSIONS", data.permissions);
       } catch (e) {
         commit("SET_LOGGED", false);
         commit("SET_USER", null);

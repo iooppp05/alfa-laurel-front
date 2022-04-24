@@ -9,20 +9,24 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    meta: { role: store.state.auth.role },
     component: Home,
   },
   {
     name: "Exam",
     path: "/examen",
-    meta: { role: JSON.stringify(store.state.auth.roles) },
     component: () => import("../views/Exam.vue"),
   },
   {
     name: "Admin",
     path: "/admin",
-    meta: { role: store.state.auth.role },
     component: () => import("../views/Admin.vue"),
+    children: [
+      {
+        name: "Permissions",
+        path: "permissions",
+        component: () => import("../components/admin/Permissions.vue"),
+      },
+    ],
   },
   {
     path: "/login",

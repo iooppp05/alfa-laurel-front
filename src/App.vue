@@ -26,7 +26,7 @@
                 Roles
               </v-list-item-title>
             </v-list-item>
-            <v-list-item :key="5" link>
+            <v-list-item :key="5" to="/admin/permissions" link>
               <v-list-item-title>
                 <v-icon v-text="'mdi-shield-account-outline'"></v-icon>
                 Permisos

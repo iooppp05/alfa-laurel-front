@@ -6,6 +6,7 @@ import vuetify from "./plugins/vuetify";
 import "./plugins/axios";
 
 Vue.config.productionTip = false;
+
 // para mantener al usuario en session en modo SPA
 store.dispatch("auth/me").then(() => {
   new Vue({
