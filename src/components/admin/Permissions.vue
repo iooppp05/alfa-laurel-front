@@ -121,10 +121,11 @@ export default {
       });
     },
     async save() {
-      let response = await RolePermissionsService.setPermission(
-        this.editedItem
-      );
-      console.log(response);
+      try {
+        await RolePermissionsService.setPermission(this.editedItem);
+      } catch (e) {
+        this.showSnackBar(e);
+      }
     },
   },
 };

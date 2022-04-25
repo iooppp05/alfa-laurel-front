@@ -29,24 +29,10 @@ export default {
     },
   },
   actions: {
-    async login({ dispatch, commit }, credentials) {
-      try {
-        await axios.get("/sanctum/csrf-cookie");
-        await axios.post("/login", credentials);
-        await dispatch("me");
-      } catch (e) {
-        const [errors] = Object.entries(e.response.data.errors);
-        commit(
-          "settings/SHOW_SNACKBAR",
-          {
-            value: true,
-            text: `${errors[0]}: ${errors[1]}`,
-            color: "danger",
-            bottom: true,
-          },
-          { root: true }
-        );
-      }
+    async login({ dispatch }, credentials) {
+      await axios.get("/sanctum/csrf-cookie");
+      await axios.post("/login", credentials);
+      await dispatch("me");
     },
     async token_login({ dispatch, commit }, credentials) {
       try {

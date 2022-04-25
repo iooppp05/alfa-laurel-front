@@ -28,7 +28,9 @@
   </div>
 </template>
 <script>
+import snackbar from "@/mixins/snackbar";
 export default {
+  mixins: [snackbar],
   data() {
     return {
       appName: "Instituto Alfa Laurel",
@@ -45,26 +47,42 @@ export default {
     next();
   },
   methods: {
-    async submit() {
+    async login() {
       try {
         this.$store.commit("settings/TOGGLE_LOADING", true);
         await this.$store.dispatch("auth/login", this.credentials);
-        this.$store.commit("settings/TOGGLE_LOADING", false);
-        await this.initRolesPermissions();
-        await this.$router.replace({
-          name: this.$store.getters["auth/isAdmin"] ? "Admin" : "Home",
-        });
       } catch (e) {
-        console.log("1");
+        this.showSnackBar(e);
+      } finally {
+        this.$store.commit("settings/TOGGLE_LOADING", false);
+      }
+    },
+    async submit() {
+      try {
+        await this.login();
+        if (this.$store.state.auth.logged) {
+          await this.initRolesPermissions();
+          await this.$router.replace({
+            name: this.$store.getters["auth/isAdmin"] ? "Admin" : "Home",
+          });
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
     initRolesPermissions() {
-      this.$gates.setRoles(
-        this.$store.state.auth.roles.map((role) => role.name)
-      );
-      this.$gates.setPermissions(
-        this.$store.state.auth.permissions.map((permission) => permission.name)
-      );
+      try {
+        this.$gates.setRoles(
+          this.$store.state.auth.roles.map((role) => role.name)
+        );
+        this.$gates.setPermissions(
+          this.$store.state.auth.permissions.map(
+            (permission) => permission.name
+          )
+        );
+      } catch (e) {
+        console.error(e.message);
+      }
     },
   },
 };
