@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "./plugins/axios";
+import "./plugins/gates";
 
 Vue.config.productionTip = false;
 

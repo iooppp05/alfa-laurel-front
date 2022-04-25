@@ -86,7 +86,7 @@
                 Mi cuenta</v-list-item-title
               >
             </v-list-item>
-            <v-list-item @click.stop="$store.dispatch('auth/logout')" link>
+            <v-list-item @click.stop="logout" link>
               <v-list-item-title>
                 <v-icon v-text="'mdi-logout'"></v-icon>
                 Salir</v-list-item-title
@@ -103,6 +103,9 @@
       <v-container fluid>
         <!-- If using vue-router -->
         <router-view></router-view>
+        <v-snackbar :value="$store.state.settings.snackbar.value">
+          {{ $store.state.settings.snackbar.text }}
+        </v-snackbar>
       </v-container>
     </v-main>
 
@@ -146,8 +149,10 @@ export default {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     },
     async logout() {
+      this.$gates.setPermissions([]);
+      this.$gates.setRoles([]);
       await this.$store.dispatch("auth/logout", null, { root: true });
-      await this.$router.replace({ name: "Home" });
+      // await this.$router.replace({ name: "Home" }); ya redirecciono desde vuex
     },
     async token_logout() {
       await this.$store.dispatch("auth/token_logout", null, { root: true });
