@@ -18,7 +18,7 @@
                 Usuarios
               </v-list-item-title>
             </v-list-item>
-            <v-list-item :key="4" link>
+            <v-list-item :key="4" to="/admin/roles" link>
               <v-list-item-title>
                 <v-icon
                   v-text="'mdi-badge-account-horizontal-outline'"
@@ -103,7 +103,10 @@
       <v-container fluid>
         <!-- If using vue-router -->
         <router-view></router-view>
-        <v-snackbar :value="$store.state.settings.snackbar.value">
+        <v-snackbar
+          :value="$store.state.settings.snackbar.value"
+          :color="$store.state.settings.snackbar.color"
+        >
           {{ $store.state.settings.snackbar.text }}
         </v-snackbar>
       </v-container>

@@ -13,17 +13,17 @@
       :headers="headers"
       :items="desserts"
       :search="search"
-      :footer-props="{ 'items-per-page-text': 'Permisos por página' }"
+      :footer-props="{ 'items-per-page-text': 'Roles por página' }"
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Permisos</v-toolbar-title>
+          <v-toolbar-title>Roles</v-toolbar-title>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                + Añadir Permiso
+                + Añadir Rol
               </v-btn>
             </template>
             <v-card>
@@ -61,7 +61,7 @@
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5"
-                >¿Estas seguro de eliminar este permiso?</v-card-title
+                >¿Estas seguro de eliminar este rol?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -73,7 +73,7 @@
                   :disabled="isBtbBlocked"
                   text
                   @click="deletePermission"
-                  >OK</v-btn
+                  >Aceptar</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
@@ -96,10 +96,10 @@ import snackbar from "@/mixins/snackbar";
 const RolePermissionsService = new RolesPermissions();
 export default {
   mixins: [snackbar],
-  name: "Permissions",
+  name: "Roles",
   data() {
     return {
-      formTitle: "Añadir permiso",
+      formTitle: "Añadir Rol",
       idSelected: null,
       isBtbBlocked: false,
       editedItem: { name: null },
@@ -140,11 +140,11 @@ export default {
     async save() {
       try {
         this.isBtbBlocked = true;
-        await RolePermissionsService.setPermission(this.editedItem);
+        await RolePermissionsService.setRole(this.editedItem);
         await this.init();
         await this.showSnackBar(
           "Exito",
-          "Permiso agregado correctamente",
+          "Rol agregado correctamente",
           "success"
         );
         this.dialog = false;
@@ -154,7 +154,7 @@ export default {
           tag = "";
         if (e.response.data.message.includes("already exists")) {
           text = "Ya existe";
-          tag = `Permiso ${this.editedItem.name}`;
+          tag = `Role ${this.editedItem.name}`;
         }
         this.showSnackBar(tag, text);
       }
@@ -163,27 +163,23 @@ export default {
       if (this.idSelected)
         try {
           this.isBtbBlocked = true;
-          await RolePermissionsService.deletePermissions({
-            permissionId: this.idSelected,
+          await RolePermissionsService.deleteRole({
+            roleId: this.idSelected,
           });
           await this.init();
           await this.showSnackBar(
             "Exito",
-            "Permiso Eliminado correctamente",
+            "Rol Eliminado correctamente",
             "success"
           );
           this.dialogDelete = false;
           this.isBtbBlocked = false;
         } catch (e) {
-          this.showSnackBar(
-            "Error",
-            "No fue posible eliminar el permiso",
-            "error"
-          );
+          this.showSnackBar("Error", "No fue posible eliminar el rol", "error");
         }
     },
     async init() {
-      let { data } = await RolePermissionsService.getPermissions();
+      let { data } = await RolePermissionsService.getRoles();
       this.desserts = data;
       this.editedItem = { name: null };
     },

@@ -1,12 +1,12 @@
 export default {
   methods: {
-    showSnackBar(tag, text) {
+    showSnackBar(tag, text, color = "warning") {
       this.$store.commit(
         "settings/SHOW_SNACKBAR",
         {
           value: true,
           text: `${tag}: ${text}`,
-          color: "danger",
+          color,
           bottom: true,
         },
         { root: true }
