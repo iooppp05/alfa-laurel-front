@@ -1,12 +1,7 @@
 import axios from "axios";
 export class RolesPermissions {
   async setPermission({ name }) {
-    try {
-      return await axios.post("/api/permissions", { name });
-    } catch (e) {
-      // TODO IMPLEMENTAR MENSAJE DE ALERTA GLOBAL
-      console.log(e.message);
-    }
+    return await axios.post("/api/permissions", { name: name.toLowerCase() });
   }
   async getPermissions() {
     return await axios.get("/api/permissions");

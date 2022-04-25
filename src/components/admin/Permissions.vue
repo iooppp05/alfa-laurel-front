@@ -87,8 +87,10 @@
 
 <script>
 import { RolesPermissions } from "@/services/RolePermissions";
+import snackbar from "@/mixins/snackbar";
 const RolePermissionsService = new RolesPermissions();
 export default {
+  mixins: [snackbar],
   name: "Permissions",
   data() {
     return {
@@ -124,7 +126,13 @@ export default {
       try {
         await RolePermissionsService.setPermission(this.editedItem);
       } catch (e) {
-        this.showSnackBar(e);
+        let text = "",
+          tag = "";
+        if (e.response.data.message.includes("already exists")) {
+          text = "Ya existe";
+          tag = `Permiso ${this.editedItem.name}`;
+        }
+        this.showSnackBar(tag, text);
       }
     },
   },

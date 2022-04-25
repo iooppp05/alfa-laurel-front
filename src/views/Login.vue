@@ -52,7 +52,8 @@ export default {
         this.$store.commit("settings/TOGGLE_LOADING", true);
         await this.$store.dispatch("auth/login", this.credentials);
       } catch (e) {
-        this.showSnackBar(e);
+        const [errors] = Object.entries(e.response?.data?.errors);
+        this.showSnackBar(errors[0], errors[1]);
       } finally {
         this.$store.commit("settings/TOGGLE_LOADING", false);
       }
