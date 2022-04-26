@@ -11,7 +11,7 @@ export default {
       bottom: true,
     },
     links: [
-      { text: "Materias", icon: "mdi-bookshelf" },
+      { text: "Materias", icon: "mdi-bookshelf", to: "/materias" },
       { text: "Exámenes", icon: "mdi-file-multiple-outline" },
     ],
   },

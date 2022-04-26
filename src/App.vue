@@ -33,7 +33,7 @@
               </v-list-item-title>
             </v-list-item>
           </v-list-group>
-          <v-list-item v-for="(link, i) in links" :key="i">
+          <v-list-item v-for="(link, i) in links" :to="link.to" :key="i">
             <v-list-item-icon>
               <v-icon v-text="link.icon"></v-icon>
             </v-list-item-icon>

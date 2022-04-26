@@ -39,6 +39,11 @@ const routes = [
     ],
   },
   {
+    path: "/materias",
+    name: "Subject",
+    component: () => import("../components/Subject/Index.vue"),
+  },
+  {
     path: "/login",
     name: "Login",
     component: () => import("../views/Login.vue"),
