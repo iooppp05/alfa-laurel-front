@@ -1,6 +1,6 @@
 import axios from "axios";
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost";
+axios.defaults.baseURL = "http://localhost:8000";
 axios.interceptors.request.use(
   (config) => {
     const token = window.localStorage.getItem("token");
