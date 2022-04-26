@@ -13,6 +13,8 @@
       :headers="headers"
       :items="desserts"
       :search="search"
+      :loading="loading"
+      loading-text="Cargando... por favor espere"
       :footer-props="{ 'items-per-page-text': 'Permisos por página' }"
     >
       <template v-slot:top>
@@ -100,6 +102,7 @@ export default {
   data() {
     return {
       formTitle: "Añadir permiso",
+      loading: true,
       idSelected: null,
       isBtbBlocked: false,
       editedItem: { name: null },
@@ -186,6 +189,7 @@ export default {
       let { data } = await RolePermissionsService.getPermissions();
       this.desserts = data;
       this.editedItem = { name: null };
+      this.loading = false;
     },
   },
 };

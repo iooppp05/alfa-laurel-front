@@ -5,7 +5,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "./plugins/axios";
 import "./plugins/gates";
-
+import "./plugins/vee-validate";
 Vue.config.productionTip = false;
 
 // para mantener al usuario en session en modo SPA

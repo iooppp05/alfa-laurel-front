@@ -13,6 +13,8 @@
       :headers="headers"
       :items="desserts"
       :search="search"
+      :loading="loading"
+      loading-text="Cargando... por favor espere"
       :footer-props="{ 'items-per-page-text': 'Roles por página' }"
     >
       <template v-slot:top>
@@ -100,6 +102,7 @@ export default {
   data() {
     return {
       formTitle: "Añadir Rol",
+      loading: true,
       idSelected: null,
       isBtbBlocked: false,
       editedItem: { name: null },
@@ -182,6 +185,7 @@ export default {
       let { data } = await RolePermissionsService.getRoles();
       this.desserts = data;
       this.editedItem = { name: null };
+      this.loading = false;
     },
   },
 };

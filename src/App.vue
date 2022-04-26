@@ -12,7 +12,7 @@
                 <v-list-item-title>Roles y permisos</v-list-item-title>
               </v-list-item-content>
             </template>
-            <v-list-item :key="3" link>
+            <v-list-item :key="3" to="/admin/users" link>
               <v-list-item-title>
                 <v-icon v-text="'mdi-account-multiple-outline'"></v-icon>
                 Usuarios

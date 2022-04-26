@@ -31,6 +31,11 @@ const routes = [
         path: "roles",
         component: () => import("../components/admin/Roles.vue"),
       },
+      {
+        name: "Users",
+        path: "users",
+        component: () => import("../components/admin/Users.vue"),
+      },
     ],
   },
   {
