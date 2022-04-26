@@ -252,6 +252,22 @@
                           ></v-textarea>
                         </validation-provider>
                       </v-col>
+                      <v-col cols="12">
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Rol"
+                          :rules="{
+                            required: true,
+                          }"
+                        >
+                          <v-select
+                            :error-messages="errors"
+                            :items="roles"
+                            v-model="roleSelected"
+                          >
+                          </v-select>
+                        </validation-provider>
+                      </v-col>
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -309,8 +325,10 @@
 
 <script>
 import { Users } from "@/services/Users";
+import { RolesPermissions } from "@/services/RolePermissions";
 import snackbar from "@/mixins/snackbar";
 const UserService = new Users();
+const RolePermissionsService = new RolesPermissions();
 export default {
   filters: {
     rolesFilter(roles) {
@@ -322,6 +340,7 @@ export default {
   data() {
     return {
       formTitle: "Añadir Usuario",
+      roleSelected: null,
       loading: true,
       idSelected: null,
       isBtbBlocked: false,
@@ -362,12 +381,20 @@ export default {
         { text: "Acciones", value: "actions", sortable: false },
       ],
       desserts: [],
+      roles: [],
     };
   },
   created() {
     this.init();
+    this.getRoles();
   },
   methods: {
+    async getRoles() {
+      let { data } = await RolePermissionsService.getRoles();
+      this.roles = data.map((role) => {
+        return { value: role.name, text: role.name.toUpperCase() };
+      });
+    },
     async showDialog(name, idSelected = 0) {
       let response;
       switch (name) {
@@ -381,7 +408,8 @@ export default {
           this.idSelected = idSelected;
           response = await UserService.get({ userId: idSelected });
           this.editedItem = response.data;
-          console.log(this.editedItem);
+          console.log(response.data);
+          this.roleSelected = response.data.roles[0]?.name;
           break;
       }
     },
@@ -396,6 +424,9 @@ export default {
       try {
         this.isBtbBlocked = true;
         let isStore = this.formTitle === "Añadir Usuario";
+        if (this.roleSelected) {
+          this.editedItem.role = this.roleSelected;
+        }
         if (isStore) {
           await UserService.store({ userData: this.editedItem });
         } else {
@@ -413,6 +444,7 @@ export default {
         );
         this.dialog = false;
         this.isBtbBlocked = false;
+        this.roleSelected = null;
       } catch (e) {
         let text = e.response.data.message,
           tag = "Error";

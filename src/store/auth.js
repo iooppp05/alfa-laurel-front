@@ -7,8 +7,8 @@ export default {
     logged: false,
     user: null,
     token: window.localStorage.getItem("token"),
-    roles: null,
-    permissions: null,
+    roles: null, //roles del usuario
+    permissions: null, //permisos del usuario
   },
   mutations: {
     SET_LOGGED(state, logged) {
