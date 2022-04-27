@@ -37,6 +37,7 @@ export default {
       credentials: {
         email: "admin@example.com",
         password: "password",
+        device_name: "front_alfa_laurel",
       },
     };
   },
@@ -50,7 +51,7 @@ export default {
     async login() {
       try {
         this.$store.commit("settings/TOGGLE_LOADING", true);
-        await this.$store.dispatch("auth/login", this.credentials);
+        await this.$store.dispatch("auth/token_login", this.credentials);
       } catch (e) {
         const [errors] = Object.entries(e.response?.data?.errors);
         this.showSnackBar(errors[0], errors[1]);
