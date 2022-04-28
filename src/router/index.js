@@ -51,12 +51,12 @@ const routes = [
   },
   { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
 ];
-const router = VueRouter.createRouter({
-  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
-  history: VueRouter.createWebHashHistory(),
+
+const router = new VueRouter({
+  mode: "history",
   base: process.env.BASE_URL,
-  routes, // short for `routes: routes`
-})
+  routes,
+});
 router.beforeEach((to, from, next) => {
   if (to.name !== "Login" && !store.state.auth.logged) next({ name: "Login" });
   else next();
