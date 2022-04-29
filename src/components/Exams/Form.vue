@@ -45,20 +45,25 @@
           <v-col cols="12" md="4">
             <v-text-field
               v-model="item.option1"
-              :label="`Opción-${index + 1}`"
+              label="Opción-1"
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="4">
             <v-text-field
               v-model="item.option2"
-              :label="`Opción-${index + 2}`"
+              label="Opción-2"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col cols="11" md="3">
             <v-text-field
               v-model="item.option3"
-              :label="`Opción-${index + 3}`"
+              label="Opción-3"
             ></v-text-field>
+          </v-col>
+          <v-col cols="1" md="1" class="align-center d-flex">
+            <v-btn @click="removeQuestion(item)" color="error" tile small>
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -103,6 +108,12 @@ export default {
     };
   },
   methods: {
+    removeQuestion(question) {
+      console.log(question);
+      const idx = this.editedItem.questions.findIndex((q)=> q.number === question.number);
+      console.log(idx);
+      this.editedItem.questions.splice(idx, 1);
+    },
     addRow() {
       this.id += 1;
       this.editedItem.questions.push({
