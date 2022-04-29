@@ -37,116 +37,87 @@
                 <v-stepper-step :complete="e1 > 2" step="2" editable>
                   {{ optionName }}
                 </v-stepper-step>
-                <v-divider></v-divider>
-                <v-stepper-step step="3" editable> Configurar </v-stepper-step>
               </v-stepper-header>
               <v-stepper-items>
                 <v-stepper-content step="1">
-                  <v-banner>
-                    <p>
-                      Para generar un nuevo examen tienes las siguientes
-                      opciones:
-                    </p>
-                    <v-list>
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-home</v-icon>
-                        </v-list-item-icon>
+                  <v-card>
+                    <v-card-title>Instrucciones</v-card-title>
+                    <v-card-subtitle
+                      >Para generar un nuevo examen tienes las siguientes
+                      opciones:</v-card-subtitle
+                    >
+                    <v-card-text>
+                      <v-list>
+                        <v-list-item>
+                          <v-list-item-icon>
+                            <v-icon>mdi-typewriter</v-icon>
+                          </v-list-item-icon>
 
-                        <v-list-item-title>Manualmente</v-list-item-title>
-                      </v-list-item>
-                      <v-list-item>
-                        <v-list-item-icon>
-                          <v-icon>mdi-home</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title>Archivo de Excel</v-list-item-title>
-                      </v-list-item>
-                    </v-list>
-                    <template>
-                      <small>Con la siguiente estructura</small>
-                      <v-simple-table>
+                          <v-list-item-title>Manualmente</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                          <v-list-item-icon>
+                            <v-icon>mdi-file</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-title
+                            >Archivo de Excel</v-list-item-title
+                          >
+                        </v-list-item>
+                        <small>Con la siguiente estructura</small>
+                      </v-list>
+                      <v-simple-table desnse>
                         <template v-slot:default>
                           <thead>
                             <tr>
-                              <th class="text-left">No.</th>
-                              <th class="text-left">Pregunta</th>
-                              <th class="text-left">Nivel A | B | M</th>
-                              <th class="text-left">Respuesta 1</th>
-                              <th class="text-left">Respuesta 2</th>
-                              <th class="text-left">Respuesta 3</th>
-                              <th class="text-left">Correcta</th>
+                              <th class="text-center">No.</th>
+                              <th class="text-center">Pregunta</th>
+                              <th class="text-center">
+                                Nivel <br />
+                                A | B | M
+                              </th>
+                              <th class="text-center">Respuesta 1</th>
+                              <th class="text-center">Respuesta 2</th>
+                              <th class="text-center">Respuesta 3</th>
+                              <th class="text-center">Correcta</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
-                              <td>1</td>
-                              <td>Pregunta 1</td>
-                              <td>A</td>
-                              <td>opcion 1</td>
-                              <td>opcion 2</td>
-                              <td>opcion 3</td>
-                              <td>1</td>
+                              <td class="text-center">1</td>
+                              <td class="text-center">Pregunta 1</td>
+                              <td class="text-center">A</td>
+                              <td class="text-center">opcion 1</td>
+                              <td class="text-center">opcion 2</td>
+                              <td class="text-center">opcion 3</td>
+                              <td class="text-center">1</td>
                             </tr>
                           </tbody>
                         </template>
                       </v-simple-table>
-                    </template>
-                    <template #actions>
-                      <v-btn color="primary" @click="nextStep('Manual')"
+                    </v-card-text>
+                    <v-card-actions class="d-flex justify-end">
+                      <v-btn
+                        class="mx-2"
+                        color="primary"
+                        @click="nextStep('Manual')"
                         >Manual</v-btn
                       >
                       <v-btn color="secondary" @click="nextStep('Archivo')"
                         >Archivo</v-btn
                       >
-                    </template>
-                  </v-banner>
+                    </v-card-actions>
+                  </v-card>
                 </v-stepper-content>
                 <v-stepper-content step="2">
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12">
-                        <h3>Importar Examen</h3>
-                        <small> Solo archivos CSV xlsx xls máximo 35 MB.</small>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-form>
-                          <v-text-field
-                            label="Titulo del examen"
-                            v-model="editedItem.name"
-                          ></v-text-field>
-                          <v-select
-                            label="Materia"
-                            :items="subjects"
-                            v-model="editedItem.subject_id"
-                          >
-                          </v-select>
-                          <v-select
-                            v-model="editedItem.user_id"
-                            label="Profesor"
-                            :items="users"
-                          >
-                          </v-select>
-                          <v-file-input
-                            show-size
-                            v-model="editedItem.file"
-                          ></v-file-input>
-                          <!-- accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" -->
-                          <v-btn @click="save">Aceptar</v-btn>
-                        </v-form>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-stepper-content>
-                <v-stepper-content step="3">
-                  <v-card
-                    class="mb-12"
-                    color="grey lighten-1"
-                    height="200px"
-                  ></v-card>
-
-                  <v-btn color="primary" @click="e1 = 3"> Continue </v-btn>
-
-                  <v-btn text> Cancel </v-btn>
+                  <component
+                    :is="typeComponent"
+                    :users="users"
+                    :subjects="subjects"
+                    :loading="isBtbBlocked"
+                    @create-exam-by-file="save"
+                    @create-exam-by-manual="save"
+                  >
+                  </component>
                 </v-stepper-content>
               </v-stepper-items>
             </v-stepper>
@@ -194,17 +165,20 @@ const UserService = new Users();
 export default {
   mixins: [snackbar],
   name: "Exámenes",
+  components: {
+    ExamForm: () => import("@/components/Exams/Form.vue"),
+    FileForm: () => import("@/components/Exams/FileForm.vue"),
+  },
   data() {
     return {
       users: [],
       subjects: [],
+      typeComponent: "FileForm",
       e1: 1,
       optionName: "",
-      formTitle: "Añadir Examen ",
       loading: true,
       idSelected: null,
       isBtbBlocked: false,
-      editedItem: { name: null, user_id: null, subject_id: null, file: null },
       dialog: false,
       dialogDelete: false,
       search: null,
@@ -225,8 +199,11 @@ export default {
   },
   methods: {
     nextStep(type) {
+      let isManual = type === "Manual";
       this.e1 = 2;
+      this.formTitle = isManual ? "Redactar Examen" : "";
       this.optionName = type;
+      this.typeComponent = isManual ? "ExamForm" : "FileForm";
     },
     showDialog(name, idSelected = 0) {
       switch (name) {
@@ -239,18 +216,18 @@ export default {
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        this.editedItem = {};
+        // this.editedItem = {};
         this.editedIndex = -1;
       });
     },
-    async save() {
+    async save(data) {
       try {
         this.isBtbBlocked = true;
-        await ExamenesService.store(this.editedItem);
+        await ExamenesService.store(data);
         await this.init();
         await this.showSnackBar(
           "Exito",
-          "Examen  agregada correctamente",
+          "Examen agregado correctamente",
           "success"
         );
         this.dialog = false;
@@ -260,7 +237,7 @@ export default {
           tag = "Error";
         if (e.response?.data?.message?.includes("already exists")) {
           text = "Ya existe";
-          tag = `Role ${this.editedItem.name}`;
+          tag = `Role ${data.name}`;
         }
         this.showSnackBar(tag, text);
       }
@@ -299,7 +276,7 @@ export default {
         return { value: item.id, text: item.name };
       });
       this.desserts = data;
-      this.editedItem = { name: null };
+      // this.editedItem = { name: null };
       this.loading = false;
     },
   },
@@ -309,5 +286,16 @@ export default {
 <style>
 tbody tr td.text-start {
   text-transform: capitalize !important;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
 }
 </style>

@@ -2,15 +2,16 @@ import axios from "axios";
 export class Examenes {
   async store(data) {
     let fd = new FormData();
-    fd.append("file", data.file);
-    fd.append("name", data.name);
-    fd.append("user_id", data.user_id);
-    fd.append("subject_id", data.subject_id);
-    data.file = data.file[0]
-    return await axios.post("/api/examenes", fd, {
+    if (data.file) {
+      fd.append("file", data.file);
+      fd.append("user_id", data.user_id);
+      fd.append("subject_id", data.subject_id);
+      fd.append("name", data.name);
+    }
+    return await axios.post("/api/examenes", data.file ? fd : data, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        "Content-Type": data.file ? "multipart/form-data" : "application/json",
+      },
     });
   }
   async all() {
