@@ -49,6 +49,11 @@ const routes = [
     component: () => import("../views/Login.vue"),
     meta: { darkTheme: false },
   },
+  {
+    path: "/examenes",
+    name: "Exams",
+    component: () => import("../components/Exams/Index.vue"),
+  },
   { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
 ];
 

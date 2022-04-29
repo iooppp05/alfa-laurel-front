@@ -12,7 +12,7 @@ export default {
     },
     links: [
       { text: "Materias", icon: "mdi-bookshelf", to: "/materias" },
-      { text: "Exámenes", icon: "mdi-file-multiple-outline" },
+      { text: "Exámenes", icon: "mdi-file-multiple-outline", to: "/examenes" },
     ],
   },
   mutations: {
