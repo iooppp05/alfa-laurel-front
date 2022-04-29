@@ -17,6 +17,9 @@ export class Examenes {
   async all() {
     return await axios.get("/api/examenes");
   }
+  async get(id) {
+    return await axios.get(`/api/examenes/${id}`);
+  }
   async delete({ examenId }) {
     return await axios.delete(`/api/examenes/${examenId}`);
   }

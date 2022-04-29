@@ -143,9 +143,15 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-dialog v-model="dialogUpdate" width="100%" max-width="800px">
+            <ExamForm ref="editForm"></ExamForm>
+          </v-dialog>
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
+        <v-btn @click="showDialog('update', item.id)" plain>
+          <v-icon> mdi-update </v-icon>
+        </v-btn>
         <v-btn @click="showDialog('delete', item.id)" plain>
           <v-icon> mdi-delete </v-icon>
         </v-btn>
@@ -181,6 +187,7 @@ export default {
       isBtbBlocked: false,
       dialog: false,
       dialogDelete: false,
+      dialogUpdate: false,
       search: null,
       headers: [
         {
@@ -211,14 +218,22 @@ export default {
           this.dialogDelete = !this.dialogDelete;
           this.idSelected = idSelected;
           break;
+        case "update":
+          this.idSelected = idSelected;
+          this.dialogUpdate = !this.dialogUpdate;
+          this.show(idSelected)
+          break;
       }
     },
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        // this.editedItem = {};
         this.editedIndex = -1;
       });
+    },
+    async show() {
+      this.$refs.editFrom.editedItem = ExamenesService.get(this.idSelected);
+      console.log(this.$refs.editFrom.editedItem);
     },
     async save(data) {
       try {
@@ -276,7 +291,6 @@ export default {
         return { value: item.id, text: item.name };
       });
       this.desserts = data;
-      // this.editedItem = { name: null };
       this.loading = false;
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title>Redactar Examen</v-card-title>
+    <v-card-title>Redactar/Modificar Examen</v-card-title>
     <v-card-subtitle>Todos los campos son requeridos</v-card-subtitle>
     <v-card-text>
       <v-text-field
