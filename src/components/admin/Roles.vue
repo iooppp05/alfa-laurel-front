@@ -24,7 +24,13 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn
+                color="primary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                @click="showDialog('create')"
+              >
                 + Añadir Rol
               </v-btn>
             </template>
@@ -33,16 +39,27 @@
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
               <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="editedItem.name"
-                        label="Nombre"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
+                <v-form ref="form">
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="Nombre"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-combobox
+                          v-model="editedItem.permissions"
+                          :items="permissions"
+                          label="permisos"
+                          multiple
+                          chips
+                        ></v-combobox>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -84,6 +101,9 @@
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
+        <v-btn @click="showDialog('update', item.id)" plain>
+          <v-icon> mdi-update </v-icon>
+        </v-btn>
         <v-btn @click="showDialog('delete', item.id)" plain>
           <v-icon> mdi-delete </v-icon>
         </v-btn>
@@ -99,31 +119,6 @@ const RolePermissionsService = new RolesPermissions();
 export default {
   mixins: [snackbar],
   name: "Roles",
-  data() {
-    return {
-      formTitle: "Añadir Rol",
-      loading: true,
-      idSelected: null,
-      isBtbBlocked: false,
-      editedItem: { name: null },
-      dialog: false,
-      dialogDelete: false,
-      search: null,
-      headers: [
-        {
-          text: "Nombre",
-          align: "start",
-          filterable: true,
-          value: "name",
-        },
-        { text: "Acciones", value: "actions", sortable: false },
-      ],
-      desserts: [],
-    };
-  },
-  created() {
-    this.init();
-  },
   methods: {
     showDialog(name, idSelected = 0) {
       switch (name) {
@@ -131,12 +126,23 @@ export default {
           this.dialogDelete = !this.dialogDelete;
           this.idSelected = idSelected;
           break;
+        case "update":
+          this.formTitle = "Editar Rol";
+          this.dialog = !this.dialog;
+          this.idSelected = idSelected;
+          this.getRole(idSelected);
+          break;
+        case "create":
+          this.$refs.form.reset();
+          this.dialog = !this.dialog;
+          this.formTitle = "Añadir Rol";
+          break;
       }
     },
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        this.editedItem = {};
+        this.editedItem = [];
         this.editedIndex = -1;
       });
     },
@@ -178,10 +184,50 @@ export default {
     },
     async init() {
       let { data } = await RolePermissionsService.getRoles();
+      let permissions = await RolePermissionsService.getPermissions();
+      this.permissions = permissions.data.map((role) => {
+        return { text: role.name.toUpperCase(), value: role.name };
+      });
       this.desserts = data;
-      this.editedItem = { name: null };
+      this.editedItem = { name: null, permissions: [] };
       this.loading = false;
     },
+    async getRole(idSelected) {
+      let { data } = await RolePermissionsService.getRole(idSelected);
+      this.editedItem.name = data.name;
+      this.editedItem.permissions = data.permissions.map((permission) => {
+        return {
+          value: permission.name,
+          text: permission.name.toUpperCase(),
+        };
+      });
+    },
+  },
+  data() {
+    return {
+      formTitle: "Añadir Rol",
+      loading: true,
+      idSelected: null,
+      isBtbBlocked: false,
+      editedItem: { name: null, permissions: [] },
+      dialog: false,
+      dialogDelete: false,
+      search: null,
+      permissions: [],
+      headers: [
+        {
+          text: "Nombre",
+          align: "start",
+          filterable: true,
+          value: "name",
+        },
+        { text: "Acciones", value: "actions", sortable: false },
+      ],
+      desserts: [],
+    };
+  },
+  created() {
+    this.init();
   },
 };
 </script>
