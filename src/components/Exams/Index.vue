@@ -116,6 +116,7 @@
                     :loading="isBtbBlocked"
                     @create-exam-by-file="save"
                     @create-exam-by-manual="save"
+                    ref="createExam"
                   >
                   </component>
                 </v-stepper-content>
@@ -144,7 +145,12 @@
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialogUpdate" width="100%" max-width="800px">
-            <ExamForm ref="editForm"></ExamForm>
+            <ExamForm
+              :users="users"
+              :subjects="subjects"
+              :loading="isBtbBlocked"
+              ref="editForm"
+            />
           </v-dialog>
         </v-toolbar>
       </template>
@@ -221,7 +227,7 @@ export default {
         case "update":
           this.idSelected = idSelected;
           this.dialogUpdate = !this.dialogUpdate;
-          this.show(idSelected)
+          this.show(idSelected);
           break;
       }
     },
@@ -232,8 +238,9 @@ export default {
       });
     },
     async show() {
-      this.$refs.editFrom.editedItem = ExamenesService.get(this.idSelected);
-      console.log(this.$refs.editFrom.editedItem);
+      let { data } = await ExamenesService.get(this.idSelected);
+      this.$refs.editForm.editedItem = data;
+      console.log(this.$refs.editForm.editedItem);
     },
     async save(data) {
       try {
@@ -247,6 +254,7 @@ export default {
         );
         this.dialog = false;
         this.isBtbBlocked = false;
+        this.$store.commit("examen/RESET_FORM");
       } catch (e) {
         let text = "Desconocido",
           tag = "Error";
