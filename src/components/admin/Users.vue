@@ -29,7 +29,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="primary"
-                @click="formTitle = 'Añadir Usuario'"
+                @click="showDialog('create')"
                 dark
                 class="mb-2"
                 v-bind="attrs"
@@ -42,9 +42,10 @@
               <v-card-title>
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
-              <ValidationObserver v-slot="{ invalid }">
+              <ValidationObserver v-slot="{ invalid }" ref="create-form">
                 <v-card-text>
-                  <v-container>
+                  <v-form ref="form">
+                    <v-container>
                     <v-row>
                       <v-col cols="12" md="6" lg="6" sm="12">
                         <validation-provider
@@ -270,6 +271,7 @@
                       </v-col>
                     </v-row>
                   </v-container>
+                  </v-form>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -398,6 +400,13 @@ export default {
     async showDialog(name, idSelected = 0) {
       let response;
       switch (name) {
+        case "create":
+          this.formTitle = "Añadir Usuario";
+          this.dialog = !this.dialog;
+          this.$refs.form.reset();
+          this.$refs["create-form"].reset();
+          // this.$refs["create-form"].resetValidation();
+          break;
         case "delete":
           this.dialogDelete = !this.dialogDelete;
           this.idSelected = idSelected;
