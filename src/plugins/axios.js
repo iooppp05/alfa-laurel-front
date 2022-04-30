@@ -1,6 +1,9 @@
 import axios from "axios";
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "production"
+    ? "https://office.alfalaurel.com"
+    : "http://localhost:8000";
 axios.interceptors.request.use(
   (config) => {
     const token = window.localStorage.getItem("token");
