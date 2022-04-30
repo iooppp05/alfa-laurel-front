@@ -150,16 +150,11 @@ export default {
           "Rol agregado correctamente",
           "success"
         );
+      } catch (e) {
+        this.showSnackBar(`Error`, e.response.data.message);
+      } finally {
         this.dialog = false;
         this.isBtbBlocked = false;
-      } catch (e) {
-        let text = "",
-          tag = "";
-        if (e.response.data.message.includes("already exists")) {
-          text = "Ya existe";
-          tag = `Role ${this.editedItem.name}`;
-        }
-        this.showSnackBar(tag, text);
       }
     },
     async deletePermission() {
