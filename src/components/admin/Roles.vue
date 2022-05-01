@@ -70,6 +70,7 @@
                   color="blue darken-1"
                   :disabled="isBtbBlocked"
                   text
+                  :loading="isBtbBlocked"
                   @click="save"
                 >
                   Guardar
@@ -135,7 +136,7 @@ export default {
           break;
         case "create":
           this.action = "POST";
-          this.$refs.form.reset();
+          this.editedItem = { name: null, permissions: [] };
           this.dialog = !this.dialog;
           this.formTitle = "Añadir Rol";
           break;

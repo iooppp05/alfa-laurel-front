@@ -33,16 +33,18 @@
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
               <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="editedItem.name"
-                        label="Nombre"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
+                <v-form ref="permissions-form">
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="Nombre"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -53,6 +55,7 @@
                   color="blue darken-1"
                   :disabled="isBtbBlocked"
                   text
+                  :loading="isBtbBlocked"
                   @click="save"
                 >
                   Guardar
@@ -150,16 +153,12 @@ export default {
           "Permiso agregado correctamente",
           "success"
         );
+      } catch (e) {
+        this.showSnackBar(`Error`, e.response.data.message);
+      } finally {
         this.dialog = false;
         this.isBtbBlocked = false;
-      } catch (e) {
-        let text = "",
-          tag = "";
-        if (e.response.data.message.includes("already exists")) {
-          text = "Ya existe";
-          tag = `Permiso ${this.editedItem.name}`;
-        }
-        this.showSnackBar(tag, text);
+        this.$refs["permissions-form"].reset();
       }
     },
     async deletePermission() {

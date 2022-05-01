@@ -24,7 +24,13 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-btn
+                color="primary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                @click="showDialog('create')"
+              >
                 + Añadir Materia
               </v-btn>
             </template>
@@ -37,19 +43,21 @@
                   <v-container>
                     <v-row>
                       <v-col cols="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Nombre"
-                          :rules="{
-                            required: true,
-                          }"
-                        >
-                          <v-text-field
-                            v-model="editedItem.name"
-                            label="Nombre"
-                            :error-messages="errors"
-                          ></v-text-field>
-                        </validation-provider>
+                        <v-form ref="subject-form">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Nombre"
+                            :rules="{
+                              required: true,
+                            }"
+                          >
+                            <v-text-field
+                              v-model="editedItem.name"
+                              label="Nombre"
+                              :error-messages="errors"
+                            ></v-text-field>
+                          </validation-provider>
+                        </v-form>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -63,9 +71,10 @@
                     color="blue darken-1"
                     :disabled="invalid"
                     text
+                    :loading="isBtbBlocked"
                     @click="save"
                   >
-                    Guardar
+                    Aceptar
                   </v-btn>
                 </v-card-actions>
               </ValidationObserver>
@@ -85,6 +94,7 @@
                   color="blue darken-1"
                   :disabled="isBtbBlocked"
                   text
+                  :loading="isBtbBlocked"
                   @click="deleteSubject"
                   >Aceptar</v-btn
                 >
@@ -142,6 +152,13 @@ export default {
           this.dialogDelete = !this.dialogDelete;
           this.idSelected = idSelected;
           break;
+        case "update":
+          this.dialog = !this.dialog;
+          this.editedItem = { name: null };
+          break;
+        case "create":
+          this.dialog = !this.dialog;
+          break;
       }
     },
     close() {
@@ -161,8 +178,6 @@ export default {
           "Materia agregada correctamente",
           "success"
         );
-        this.dialog = false;
-        this.isBtbBlocked = false;
       } catch (e) {
         let text = "Desconocido",
           tag = "Error";
@@ -171,6 +186,10 @@ export default {
           tag = `Role ${this.editedItem.name}`;
         }
         this.showSnackBar(tag, text);
+      } finally {
+        this.dialog = false;
+        this.isBtbBlocked = false;
+        this.$refs["subject-form"].reset();
       }
     },
     async deleteSubject() {

@@ -25,7 +25,7 @@
           <v-toolbar-title>Usuarios</v-toolbar-title>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" fullscreen>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="primary"
@@ -46,231 +46,245 @@
                 <v-card-text>
                   <v-form ref="form">
                     <v-container>
-                    <v-row>
-                      <v-col cols="12" md="6" lg="6" sm="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Apellido paterno"
-                          :rules="{
-                            required: true,
-                          }"
-                        >
-                          <v-text-field
-                            v-model="editedItem.paternal_name"
-                            label="Apellido paterno"
-                            :error-messages="errors"
-                          ></v-text-field>
-                        </validation-provider>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6" sm="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Apellido Materno"
-                          :rules="{
-                            required: true,
-                          }"
-                        >
-                          <v-text-field
-                            v-model="editedItem.maternal_name"
-                            label="Apellido Materno"
-                            :error-messages="errors"
-                          ></v-text-field>
-                        </validation-provider>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6" sm="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Nombre(s)"
-                          :rules="{
-                            required: true,
-                          }"
-                        >
-                          <v-text-field
-                            v-model="editedItem.name"
-                            label="Nombre(s)"
-                            :error-messages="errors"
-                          ></v-text-field>
-                        </validation-provider>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6" sm="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Correo electrónico"
-                          :rules="{
-                            required: true,
-                            email: true,
-                          }"
-                        >
-                          <v-text-field
-                            v-model="editedItem.email"
-                            label="Correo electrónico"
-                            :error-messages="errors"
-                            type="email"
-                          ></v-text-field>
-                        </validation-provider>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6" sm="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Contraseña"
-                          :rules="`${
-                            formTitle === 'Añadir Usuario' ? 'required' : ''
-                          }`"
-                        >
-                          <v-text-field
-                            v-model="editedItem.password"
-                            type="password"
-                            label="Contraseña"
-                            :error-messages="errors"
-                          ></v-text-field>
-                        </validation-provider>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6" sm="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Código"
-                          :rules="{
-                            required: true,
-                          }"
-                        >
-                          <v-text-field
-                            v-model="editedItem.code"
-                            label="Código"
-                            :error-messages="errors"
-                          ></v-text-field>
-                        </validation-provider>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6" sm="12">
-                        <v-dialog
-                          ref="dialog"
-                          v-model="ModalBirthday"
-                          :return-value.sync="editedItem.birthday"
-                          persistent
-                          width="290px"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <validation-provider
-                              v-slot="{ errors }"
-                              name="Fecha de nacimiento"
-                              :rules="{
-                                required: true,
-                              }"
-                            >
-                              <v-text-field
-                                v-model="editedItem.birthday"
-                                label="Fecha de nacimiento"
-                                prepend-icon="mdi-calendar"
-                                readonly
-                                :error-messages="errors"
-                                v-bind="attrs"
-                                v-on="on"
-                              ></v-text-field>
-                            </validation-provider>
-                          </template>
-                          <v-date-picker
-                            v-model="editedItem.birthday"
-                            scrollable
+                      <v-row>
+                        <v-col cols="12" md="6" lg="6" sm="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Apellido paterno"
+                            :rules="{
+                              required: true,
+                            }"
                           >
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="ModalBirthday = false"
-                            >
-                              Cancel
-                            </v-btn>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="$refs.dialog.save(editedItem.birthday)"
-                            >
-                              OK
-                            </v-btn>
-                          </v-date-picker>
-                        </v-dialog>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6" sm="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Dirección"
-                          :rules="{
-                            required: true,
-                          }"
-                        >
-                          <v-text-field
-                            v-model="editedItem.address"
-                            label="Dirección"
-                            :error-messages="errors"
-                          ></v-text-field>
-                        </validation-provider>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6" sm="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Teléfono"
-                          :rules="{
-                            required: true,
-                            digits: 10,
-                          }"
-                        >
-                          <v-text-field
-                            v-model="editedItem.phone"
-                            label="Teléfono"
-                            type="tel"
-                            :error-messages="errors"
-                          ></v-text-field>
-                        </validation-provider>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6" sm="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Contacto"
-                          :rules="{
-                            required: true,
-                          }"
-                        >
-                          <v-text-field
-                            v-model="editedItem.contact_name"
-                            label="Contacto"
-                            :error-messages="errors"
-                          ></v-text-field>
-                        </validation-provider>
-                      </v-col>
-                      <v-col cols="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Comentarios"
-                          :rules="{
-                            required: true,
-                          }"
-                        >
-                          <v-textarea
-                            v-model="editedItem.comments"
-                            label="Comentarios"
-                            no-resize
-                            rows="3"
-                            :error-messages="errors"
-                          ></v-textarea>
-                        </validation-provider>
-                      </v-col>
-                      <v-col cols="12">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Rol"
-                          :rules="{
-                            required: true,
-                          }"
-                        >
-                          <v-select
-                            :error-messages="errors"
-                            :items="roles"
-                            v-model="roleSelected"
+                            <v-text-field
+                              v-model="editedItem.paternal_name"
+                              label="Apellido paterno"
+                              :error-messages="errors"
+                            ></v-text-field>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="6" sm="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Apellido Materno"
+                            :rules="{
+                              required: true,
+                            }"
                           >
-                          </v-select>
-                        </validation-provider>
-                      </v-col>
-                    </v-row>
-                  </v-container>
+                            <v-text-field
+                              v-model="editedItem.maternal_name"
+                              label="Apellido Materno"
+                              :error-messages="errors"
+                            ></v-text-field>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="6" sm="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Nombre(s)"
+                            :rules="{
+                              required: true,
+                            }"
+                          >
+                            <v-text-field
+                              v-model="editedItem.name"
+                              label="Nombre(s)"
+                              :error-messages="errors"
+                            ></v-text-field>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="6" sm="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Correo electrónico"
+                            :rules="{
+                              required: true,
+                              email: true,
+                            }"
+                          >
+                            <v-text-field
+                              v-model="editedItem.email"
+                              label="Correo electrónico"
+                              :error-messages="errors"
+                              type="email"
+                            ></v-text-field>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="6" sm="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Contraseña"
+                            :rules="`${
+                              formTitle === 'Añadir Usuario' ? 'required' : ''
+                            }`"
+                          >
+                            <v-text-field
+                              v-model="editedItem.password"
+                              type="password"
+                              label="Contraseña"
+                              :error-messages="errors"
+                            ></v-text-field>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="6" sm="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Código"
+                            :rules="{
+                              required: true,
+                            }"
+                          >
+                            <v-text-field
+                              v-model="editedItem.code"
+                              label="Código"
+                              :error-messages="errors"
+                            ></v-text-field>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="6" sm="12">
+                          <v-dialog
+                            ref="dialog"
+                            v-model="ModalBirthday"
+                            :return-value.sync="editedItem.birthday"
+                            persistent
+                            width="290px"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <validation-provider
+                                v-slot="{ errors }"
+                                name="Fecha de nacimiento"
+                                :rules="{
+                                  required: true,
+                                }"
+                              >
+                                <v-text-field
+                                  v-model="editedItem.birthday"
+                                  label="Fecha de nacimiento"
+                                  prepend-icon="mdi-calendar"
+                                  readonly
+                                  :error-messages="errors"
+                                  v-bind="attrs"
+                                  v-on="on"
+                                ></v-text-field>
+                              </validation-provider>
+                            </template>
+                            <v-date-picker
+                              v-model="editedItem.birthday"
+                              scrollable
+                            >
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                text
+                                color="primary"
+                                @click="ModalBirthday = false"
+                              >
+                                Cancel
+                              </v-btn>
+                              <v-btn
+                                text
+                                color="primary"
+                                @click="$refs.dialog.save(editedItem.birthday)"
+                              >
+                                OK
+                              </v-btn>
+                            </v-date-picker>
+                          </v-dialog>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="6" sm="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Dirección"
+                            :rules="{
+                              required: true,
+                            }"
+                          >
+                            <v-text-field
+                              v-model="editedItem.address"
+                              label="Dirección"
+                              :error-messages="errors"
+                            ></v-text-field>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="6" sm="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Teléfono"
+                            :rules="{
+                              required: true,
+                              digits: 10,
+                            }"
+                          >
+                            <v-text-field
+                              v-model="editedItem.phone"
+                              label="Teléfono"
+                              type="tel"
+                              :error-messages="errors"
+                            ></v-text-field>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12" md="6" lg="6" sm="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Contacto"
+                            :rules="{
+                              required: true,
+                            }"
+                          >
+                            <v-text-field
+                              v-model="editedItem.contact_name"
+                              label="Contacto"
+                              :error-messages="errors"
+                            ></v-text-field>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Comentarios"
+                            :rules="{
+                              string: true,
+                            }"
+                          >
+                            <v-textarea
+                              v-model="editedItem.comments"
+                              label="Comentarios"
+                              no-resize
+                              rows="3"
+                              :error-messages="errors"
+                            ></v-textarea>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            name="Rol"
+                            :rules="{
+                              required: true,
+                            }"
+                          >
+                            <v-select
+                              :error-messages="errors"
+                              :items="roles"
+                              v-model="roleSelected"
+                            >
+                            </v-select>
+                          </validation-provider>
+                        </v-col>
+                        <v-col cols="12">
+                          <v-chip-group
+                            active-class="primary--text"
+                            column
+                            v-if="roleSelected"
+                          >
+                            <v-chip
+                              v-for="permissionRole in permissionsRole"
+                              :key="permissionRole"
+                            >
+                              {{ permissionRole }}
+                            </v-chip>
+                          </v-chip-group>
+                        </v-col>
+                      </v-row>
+                    </v-container>
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
@@ -282,6 +296,7 @@
                     color="blue darken-1"
                     :disabled="isBtbBlocked || invalid"
                     text
+                    :loading="isBtbBlocked"
                     @click="save"
                   >
                     Guardar
@@ -394,7 +409,11 @@ export default {
     async getRoles() {
       let { data } = await RolePermissionsService.getRoles();
       this.roles = data.map((role) => {
-        return { value: role.name, text: role.name.toUpperCase() };
+        return {
+          value: role.name,
+          text: role.name.toUpperCase(),
+          permissions: role.permissions,
+        };
       });
     },
     async showDialog(name, idSelected = 0) {
@@ -403,9 +422,20 @@ export default {
         case "create":
           this.formTitle = "Añadir Usuario";
           this.dialog = !this.dialog;
-          this.$refs.form.reset();
-          this.$refs["create-form"].reset();
-          // this.$refs["create-form"].resetValidation();
+          this.editedItem = {
+            name: null,
+            paternal_name: null,
+            maternal_name: null,
+            email: null,
+            password: null,
+            code: null,
+            birthday: null,
+            address: null,
+            phone: null,
+            contact_name: null,
+            comments: null,
+          };
+          this.roleSelected = null;
           break;
         case "delete":
           this.dialogDelete = !this.dialogDelete;
@@ -413,11 +443,23 @@ export default {
           break;
         case "update":
           this.formTitle = "Actualizar usuario";
+          this.editedItem = {
+            name: null,
+            paternal_name: null,
+            maternal_name: null,
+            email: null,
+            password: null,
+            code: null,
+            birthday: null,
+            address: null,
+            phone: null,
+            contact_name: null,
+            comments: null,
+          };
           this.dialog = !this.dialog;
           this.idSelected = idSelected;
           response = await UserService.get({ userId: idSelected });
           this.editedItem = response.data;
-          console.log(response.data);
           this.roleSelected = response.data.roles[0]?.name;
           break;
       }
@@ -492,6 +534,14 @@ export default {
       this.desserts = data;
       this.editedItem = { name: null };
       this.loading = false;
+    },
+  },
+  computed: {
+    permissionsRole() {
+      let [permissionsRole] = this.roles
+        .filter((role) => role.value === this.roleSelected)
+        .map((role) => role.permissions.map((permission) => permission.name));
+      return permissionsRole || [];
     },
   },
 };
