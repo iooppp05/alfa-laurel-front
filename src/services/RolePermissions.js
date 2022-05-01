@@ -10,7 +10,6 @@ export class RolesPermissions {
     return await axios.delete(`/api/permissions/${permissionId}`);
   }
   async setRole({ name, permissions }) {
-    console.log({ name, permissions });
     return await axios.post("/api/roles", {
       name: name.toLowerCase(),
       permissions: permissions,
@@ -18,6 +17,13 @@ export class RolesPermissions {
   }
   async getRole(role_id) {
     return await axios.get(`/api/roles/${role_id}`);
+  }
+  async updateRole({ role_id, name, permissions }) {
+    return await axios.post(`/api/roles/${role_id}`, {
+      name,
+      permissions,
+      _method: "PUT",
+    });
   }
   async getRoles() {
     return await axios.get("/api/roles");

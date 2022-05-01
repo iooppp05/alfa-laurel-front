@@ -127,12 +127,14 @@ export default {
           this.idSelected = idSelected;
           break;
         case "update":
+          this.action = "PUT";
           this.formTitle = "Editar Rol";
           this.dialog = !this.dialog;
           this.idSelected = idSelected;
           this.getRole(idSelected);
           break;
         case "create":
+          this.action = "POST";
           this.$refs.form.reset();
           this.dialog = !this.dialog;
           this.formTitle = "Añadir Rol";
@@ -149,7 +151,13 @@ export default {
     async save() {
       try {
         this.isBtbBlocked = true;
-        await RolePermissionsService.setRole(this.editedItem);
+        this.method === "POST"
+          ? await RolePermissionsService.setRole(this.editedItem)
+          : await RolePermissionsService.updateRole({
+              role_id: this.idSelected,
+              name: this.editedItem.name,
+              permissions: this.editedItem.permissions,
+            });
         await this.init();
         await this.showSnackBar(
           "Exito",
@@ -205,6 +213,7 @@ export default {
   },
   data() {
     return {
+      action: "GET",
       formTitle: "Añadir Rol",
       loading: true,
       idSelected: null,
