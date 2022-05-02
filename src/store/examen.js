@@ -12,9 +12,31 @@ export default {
           id: 1,
           question: null,
           level: null,
-          number: null,
+          number: 1,
           answer: null,
-          options: [],
+          options: [
+            {
+              id: 1,
+              option: null,
+              is_answer: null,
+              cols: "12",
+              md: "4",
+            },
+            {
+              id: 2,
+              option: null,
+              is_answer: null,
+              cols: "12",
+              md: "4",
+            },
+            {
+              id: 3,
+              option: null,
+              is_answer: null,
+              cols: "10",
+              md: "3",
+            },
+          ],
         },
       ],
     },
@@ -28,16 +50,70 @@ export default {
         level: null,
         number: state.id,
         answer: null,
-        options: [],
+        options: [
+          {
+            id: 1,
+            option: null,
+            is_answer: null,
+            cols: "12",
+            md: "4",
+          },
+          {
+            id: 2,
+            option: null,
+            is_answer: null,
+            cols: "12",
+            md: "4",
+          },
+          {
+            id: 3,
+            option: null,
+            is_answer: null,
+            cols: "10",
+            md: "3",
+          },
+        ],
       });
     },
-    UPDATE(state, data) {
-      data.forEach((component) => {
-        state.editedItem.questions.push(component.question);
+    UPDATE_NAME(state, name) {
+      state.editedItem.name = name;
+    },
+    UPDATE_USER_ID(state, user_id) {
+      state.editedItem.user_id = user_id;
+    },
+    UPDATE_SUBJECT_ID(state, subject_id) {
+      state.editedItem.subject_id = subject_id;
+    },
+    REMOVE_QUESTION(state) {
+      state.id--;
+      state.editedItem.questions.pop();
+    },
+    UPDATE_QUESTION(state, question) {
+      state.editedItem.questions.map((q) => {
+        if (q.id === question.id) {
+          q = question;
+        }
       });
     },
     RESET_FORM(state) {
-      state.resetForm = !this.state.resetForm;
+      state.editedItem = {
+        name: null,
+        user_id: null,
+        subject_id: null,
+        questions: [
+          {
+            id: 1,
+            question: null,
+            level: null,
+            number: null,
+            answer: null,
+            options: [],
+          },
+        ],
+      };
+    },
+    SET_EXAMEN_QUESTIONS(state, questions) {
+      state.editedItem.questions = questions;
     },
   },
 };

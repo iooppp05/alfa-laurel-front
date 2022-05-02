@@ -22,106 +22,105 @@
           <v-toolbar-title>Exámenes</v-toolbar-title>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="800px">
+          <v-dialog v-model="dialog" fullscreen>
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 + Añadir Examen
               </v-btn>
             </template>
-            <v-stepper v-model="e1" flat outlined tile>
-              <v-stepper-header>
-                <v-stepper-step :complete="e1 > 1" step="1" editable>
-                  Instrucciones
-                </v-stepper-step>
-                <v-divider></v-divider>
-                <v-stepper-step :complete="e1 > 2" step="2" editable>
-                  {{ optionName }}
-                </v-stepper-step>
-              </v-stepper-header>
-              <v-stepper-items>
-                <v-stepper-content step="1">
-                  <v-card>
-                    <v-card-title>Instrucciones</v-card-title>
-                    <v-card-subtitle
-                      >Para generar un nuevo examen tienes las siguientes
-                      opciones:</v-card-subtitle
-                    >
-                    <v-card-text>
-                      <v-list>
-                        <v-list-item>
-                          <v-list-item-icon>
-                            <v-icon>mdi-typewriter</v-icon>
-                          </v-list-item-icon>
+            <v-card>
+              <v-stepper v-model="e1" flat outlined tile min-height="100%">
+                <v-stepper-header>
+                  <v-stepper-step :complete="e1 > 1" step="1" editable>
+                    Instrucciones
+                  </v-stepper-step>
+                  <v-divider></v-divider>
+                  <v-stepper-step :complete="e1 > 2" step="2" editable>
+                    {{ optionName }}
+                  </v-stepper-step>
+                </v-stepper-header>
+                <v-stepper-items>
+                  <v-stepper-content step="1">
+                    <v-card>
+                      <v-card-title>Instrucciones</v-card-title>
+                      <v-card-subtitle
+                        >Para generar un nuevo examen tienes las siguientes
+                        opciones:</v-card-subtitle
+                      >
+                      <v-card-text>
+                        <v-list>
+                          <v-list-item link @click="nextStep('Manual')">
+                            <v-list-item-icon>
+                              <v-icon color="primary">mdi-typewriter</v-icon>
+                            </v-list-item-icon>
 
-                          <v-list-item-title>Manualmente</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item>
-                          <v-list-item-icon>
-                            <v-icon>mdi-file</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-title
-                            >Archivo de Excel</v-list-item-title
-                          >
-                        </v-list-item>
-                        <small>Con la siguiente estructura</small>
-                      </v-list>
-                      <v-simple-table desnse>
-                        <template v-slot:default>
-                          <thead>
-                            <tr>
-                              <th class="text-center">No.</th>
-                              <th class="text-center">Pregunta</th>
-                              <th class="text-center">
-                                Nivel <br />
-                                A | B | M
-                              </th>
-                              <th class="text-center">Respuesta 1</th>
-                              <th class="text-center">Respuesta 2</th>
-                              <th class="text-center">Respuesta 3</th>
-                              <th class="text-center">Correcta</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="text-center">1</td>
-                              <td class="text-center">Pregunta 1</td>
-                              <td class="text-center">A</td>
-                              <td class="text-center">opcion 1</td>
-                              <td class="text-center">opcion 2</td>
-                              <td class="text-center">opcion 3</td>
-                              <td class="text-center">1</td>
-                            </tr>
-                          </tbody>
-                        </template>
-                      </v-simple-table>
-                    </v-card-text>
-                    <v-card-actions class="d-flex justify-end">
-                      <v-btn
-                        class="mx-2"
-                        color="primary"
-                        @click="nextStep('Manual')"
-                        >Manual</v-btn
-                      >
-                      <v-btn color="secondary" @click="nextStep('Archivo')"
-                        >Archivo</v-btn
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </v-stepper-content>
-                <v-stepper-content step="2">
-                  <component
-                    :is="typeComponent"
-                    :users="users"
-                    :subjects="subjects"
-                    :loading="isBtbBlocked"
-                    @create-exam-by-file="save"
-                    @create-exam-by-manual="save"
-                    ref="createExam"
-                  >
-                  </component>
-                </v-stepper-content>
-              </v-stepper-items>
-            </v-stepper>
+                            <v-list-item-title>Manualmente</v-list-item-title>
+                          </v-list-item>
+                          <v-list-item link @click="nextStep('Archivo')">
+                            <v-list-item-icon>
+                              <v-icon color="secondary">mdi-file</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-title
+                              >Archivo de Excel</v-list-item-title
+                            >
+                          </v-list-item>
+                          <small>Con la siguiente estructura</small>
+                        </v-list>
+                        <keep-alive>
+                          <v-simple-table desnse height="100%">
+                            <template v-slot:default>
+                              <thead>
+                                <tr>
+                                  <th class="text-center">No.</th>
+                                  <th class="text-center">Pregunta</th>
+                                  <th class="text-center">
+                                    Nivel <br />
+                                    A | B | M
+                                  </th>
+                                  <th class="text-center">Respuesta 1</th>
+                                  <th class="text-center">Respuesta 2</th>
+                                  <th class="text-center">Respuesta 3</th>
+                                  <th class="text-center">Correcta</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td class="text-center">1</td>
+                                  <td class="text-center">Pregunta 1</td>
+                                  <td class="text-center">A</td>
+                                  <td class="text-center">opcion 1</td>
+                                  <td class="text-center">opcion 2</td>
+                                  <td class="text-center">opcion 3</td>
+                                  <td class="text-center">1</td>
+                                </tr>
+                              </tbody>
+                            </template>
+                          </v-simple-table>
+                        </keep-alive>
+                      </v-card-text>
+                    </v-card>
+                  </v-stepper-content>
+                  <v-stepper-content step="2">
+                    <v-card outlined>
+                      <v-card-text>
+                        <component
+                          :is="typeComponent"
+                          :users="users"
+                          :subjects="subjects"
+                          :loading="isBtbBlocked"
+                          @create-exam-by-file="save"
+                          @create-exam-by-manual="save"
+                          @closeForm="dialog = !dialog"
+                          formTitle="Redactar Examen"
+                          ref="createExam"
+                        >
+                        </component>
+                      </v-card-text>
+                    </v-card>
+                  </v-stepper-content>
+                </v-stepper-items>
+              </v-stepper>
+            </v-card>
           </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
@@ -144,13 +143,19 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogUpdate" width="100%" max-width="800px">
-            <ExamForm
-              :users="users"
-              :subjects="subjects"
-              :loading="isBtbBlocked"
-              ref="editForm"
-            />
+          <v-dialog v-model="dialogUpdate" fullscreen>
+            <v-card outlined>
+              <v-card-text class="mt-lg-16 mt-md-16">
+                <ExamForm
+                  :users="users"
+                  :subjects="subjects"
+                  :loading="isBtbBlocked"
+                  @closeForm="dialogUpdate = !dialogUpdate"
+                  formTitle="Actualizar examen"
+                  ref="editForm"
+                />
+              </v-card-text>
+            </v-card>
           </v-dialog>
         </v-toolbar>
       </template>
@@ -239,8 +244,10 @@ export default {
     },
     async show() {
       let { data } = await ExamenesService.get(this.idSelected);
-      this.$refs.editForm.editedItem = data;
-      console.log(this.$refs.editForm.editedItem);
+      this.$refs.editForm.name = data.data.name;
+      this.$refs.editForm.user_id = data.data.user_id;
+      this.$refs.editForm.subject_id = data.data.subject_id;
+      this.$store.commit("examen/SET_EXAMEN_QUESTIONS", data.data.questions);
     },
     async save(data) {
       try {
@@ -254,7 +261,8 @@ export default {
         );
         this.dialog = false;
         this.isBtbBlocked = false;
-        this.$store.commit("examen/RESET_FORM");
+
+        // this.$store.commit("examen/RESET_FORM");
       } catch (e) {
         let text = "Desconocido",
           tag = "Error";
