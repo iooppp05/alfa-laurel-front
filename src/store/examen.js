@@ -1,6 +1,8 @@
 export default {
   namespaced: true,
   state: {
+    dialog: false,
+    dialogUpdate: false,
     id: 1,
     resetForm: false,
     editedItem: {
@@ -42,6 +44,12 @@ export default {
     },
   },
   mutations: {
+    CLOSE_UPDATE_DIALOG(state) {
+      state.dialogUpdate = false;
+    },
+    OPEN_UPDATE_DIALOG(state) {
+      state.dialogUpdate = true;
+    },
     ADD_QUESTION(state) {
       state.id++;
       state.editedItem.questions.push({

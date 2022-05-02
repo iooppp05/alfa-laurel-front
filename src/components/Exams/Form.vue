@@ -42,7 +42,6 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-dialog> </v-dialog>
       <questions-component
         @remove-question="dialogRemoveQuestion = !dialogRemoveQuestion"
         ref="questionComponent"
@@ -154,7 +153,7 @@ export default {
     cancel() {
       this.$refs.form.reset();
       this.$store.commit("examen/RESET_FORM");
-      this.$emit("closeForm");
+      this.$store.commit("examen/CLOSE_UPDATE_DIALOG")
     },
   },
 };

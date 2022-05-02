@@ -22,7 +22,7 @@
           <v-toolbar-title>Exámenes</v-toolbar-title>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" fullscreen>
+          <v-dialog :value="$store.state.examen.dialog" fullscreen>
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 + Añadir Examen
@@ -130,7 +130,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="dialogDelete = false"
-                  >Cancel</v-btn
+                  >Cancelar</v-btn
                 >
                 <v-btn
                   color="blue darken-1"
@@ -143,14 +143,13 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogUpdate" fullscreen>
+          <v-dialog :value="$store.state.examen.dialogUpdate" fullscreen>
             <v-card outlined>
               <v-card-text class="mt-lg-16 mt-md-16">
                 <ExamForm
                   :users="users"
                   :subjects="subjects"
                   :loading="isBtbBlocked"
-                  @closeForm="dialogUpdate = !dialogUpdate"
                   formTitle="Actualizar examen"
                   ref="editForm"
                 />
@@ -160,9 +159,14 @@
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn @click="showDialog('update', item.id)" plain>
-          <v-icon> mdi-update </v-icon>
-        </v-btn>
+        <UpdateButton :id="item.id" />
+        <!--        <v-btn-->
+        <!--          :loading="loading"-->
+        <!--          @click="showDialog('update', )"-->
+        <!--          plain-->
+        <!--        >-->
+        <!--          <v-icon> mdi-update </v-icon>-->
+        <!--        </v-btn>-->
         <v-btn @click="showDialog('delete', item.id)" plain>
           <v-icon> mdi-delete </v-icon>
         </v-btn>
@@ -185,6 +189,7 @@ export default {
   components: {
     ExamForm: () => import("@/components/Exams/Form.vue"),
     FileForm: () => import("@/components/Exams/FileForm.vue"),
+    UpdateButton: () => import("@/components/Exams/UpdateButton"),
   },
   data() {
     return {
@@ -229,25 +234,13 @@ export default {
           this.dialogDelete = !this.dialogDelete;
           this.idSelected = idSelected;
           break;
-        case "update":
-          this.idSelected = idSelected;
-          this.dialogUpdate = !this.dialogUpdate;
-          this.show(idSelected);
-          break;
       }
     },
     close() {
-      this.dialog = false;
+      this.dialog = false; //todo
       this.$nextTick(() => {
         this.editedIndex = -1;
       });
-    },
-    async show() {
-      let { data } = await ExamenesService.get(this.idSelected);
-      this.$refs.editForm.name = data.data.name;
-      this.$refs.editForm.user_id = data.data.user_id;
-      this.$refs.editForm.subject_id = data.data.subject_id;
-      this.$store.commit("examen/SET_EXAMEN_QUESTIONS", data.data.questions);
     },
     async save(data) {
       try {
@@ -259,10 +252,6 @@ export default {
           "Examen agregado correctamente",
           "success"
         );
-        this.dialog = false;
-        this.isBtbBlocked = false;
-
-        // this.$store.commit("examen/RESET_FORM");
       } catch (e) {
         let text = "Desconocido",
           tag = "Error";
@@ -271,6 +260,9 @@ export default {
           tag = `Role ${data.name}`;
         }
         this.showSnackBar(tag, text);
+      } finally {
+        this.dialog = false; //todo
+        this.isBtbBlocked = false;
       }
     },
     async deleteSubject() {
