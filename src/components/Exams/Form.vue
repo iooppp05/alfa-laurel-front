@@ -57,15 +57,9 @@
           >
         </v-col>
         <v-col class="d-flex justify-end">
-          <v-btn
-            color="grey lighten-2"
-            class="mx-3"
-            tile
-            :loading="loading"
-            @click="cancel"
-            >Cancelar</v-btn
-          >
-          <SaveButton/>
+          <CancelButton @reset-form="$refs.form.reset()"/>
+<!--          todo refactor saved-->
+          <SaveButton @saved="saved"/>
         </v-col>
       </v-row>
     </v-container>
@@ -77,6 +71,7 @@ export default {
   name: "Form",
   props: ["users", "subjects", "loading", "formTitle"],
   components: {
+    CancelButton: () => import("./CancelButton.vue"),
     QuestionsComponent: () => import("./Question.vue"),
     SaveButton: () => import("./SaveButton.vue"),
   },
@@ -117,6 +112,9 @@ export default {
     },
   },
   methods: {
+    saved() {
+      this.$emit('saved')
+    },
     reset(){
       this.e1 = 1;
       this.$refs.form.reset();
@@ -128,11 +126,6 @@ export default {
     removeRow() {
       this.id--;
       this.$store.commit("examen/REMOVE_QUESTION");
-    },
-    cancel() {
-      this.$refs.form.reset();
-      this.$store.commit("examen/RESET_FORM");
-      this.$store.commit("examen/CLOSE_UPDATE_DIALOG");
     },
   },
 };

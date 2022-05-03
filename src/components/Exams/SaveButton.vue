@@ -48,6 +48,7 @@ export default {
         this.$store.commit("examen/RESET_FORM")
         this.$store.commit("examen/SET_STEP",1)
         this.statusButton = false;
+        this.$emit('saved')
       }
     },
   },
