@@ -17,15 +17,25 @@ export default {
     };
   },
   methods: {
-    async show(id) {
-      this.loading =!this.loading;
-      let { data } = await ExamenesService.get(id);
-      this.$store.commit("examen/UPDATE_NAME", data.data.name);
-      this.$store.commit("examen/UPDATE_SUBJECT_ID", data.data.subject_id);
-      this.$store.commit("examen/UPDATE_USER_ID", data.data.user_id);
-      this.$store.commit("examen/SET_EXAMEN_QUESTIONS", data.data.questions);
-      this.$store.commit("examen/OPEN_UPDATE_DIALOG");
+    show(id) {
       this.loading = !this.loading;
+      ExamenesService.get(id)
+        .then(({ data }) => {
+          this.$store.commit("examen/UPDATE_NAME", data.data.name);
+          this.$store.commit("examen/UPDATE_SUBJECT_ID", data.data.subject_id);
+          this.$store.commit("examen/UPDATE_USER_ID", data.data.user_id);
+          return { data };
+        })
+        .then(({ data }) => {
+          this.$store.commit(
+            "examen/SET_EXAMEN_QUESTIONS",
+            data.data.questions
+          );
+        })
+        .then(() => {
+          this.loading = !this.loading;
+        })
+        .then(() => this.$store.commit("examen/OPEN_UPDATE_DIALOG"));
     },
   },
 };
