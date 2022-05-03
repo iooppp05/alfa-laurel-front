@@ -237,12 +237,6 @@ export default {
           break;
       }
     },
-    close() {
-      this.dialog = false; //todo
-      this.$nextTick(() => {
-        this.editedIndex = -1;
-      });
-    },
     async save(data) {
       try {
         this.isBtbBlocked = true;
