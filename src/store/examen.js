@@ -115,7 +115,29 @@ export default {
             level: null,
             number: null,
             answer: null,
-            options: [],
+            options: [
+              {
+                id: 1,
+                option: null,
+                is_answer: null,
+                cols: "12",
+                md: "4",
+              },
+              {
+                id: 2,
+                option: null,
+                is_answer: null,
+                cols: "12",
+                md: "4",
+              },
+              {
+                id: 3,
+                option: null,
+                is_answer: null,
+                cols: "10",
+                md: "3",
+              },
+            ],
           },
         ],
       };
