@@ -23,23 +23,23 @@
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog
-            @input="e1 = 1"
+              @input="$store.commit('examen/CLOSE_CREATE_DIALOG')"
             :value="$store.state.examen.dialog"
             fullscreen
           >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+            <template v-slot:activator="{ attrs }">
+              <v-btn color="primary" dark class="mb-2" v-bind="attrs" @click="$store.commit('examen/OPEN_CREATE_DIALOG')">
                 + Añadir Examen
               </v-btn>
             </template>
             <v-card>
-              <v-stepper v-model="e1" flat outlined tile min-height="100%">
+              <v-stepper v-model="$store.state.examen.e1" flat outlined tile min-height="100%">
                 <v-stepper-header>
-                  <v-stepper-step :complete="e1 > 1" step="1" editable>
+                  <v-stepper-step :complete="$store.state.examen.e1 > 1" step="1" editable>
                     Instrucciones
                   </v-stepper-step>
                   <v-divider></v-divider>
-                  <v-stepper-step :complete="e1 > 2" step="2" editable>
+                  <v-stepper-step :complete="$store.state.examen.e1 > 2" step="2" editable>
                     {{ optionName }}
                   </v-stepper-step>
                 </v-stepper-header>
@@ -197,7 +197,6 @@ export default {
       users: [],
       subjects: [],
       typeComponent: "FileForm",
-      e1: 1,
       optionName: "",
       loading: true,
       idSelected: null,
@@ -218,13 +217,17 @@ export default {
       desserts: [],
     };
   },
-  created() {
-    this.init();
+  async created() {
+    let { examenes, users, subjects } = await initExamenes();
+    this.subjects = subjects;
+    this.users = users;
+    this.desserts = examenes;
+    this.loading = false;
   },
   methods: {
     nextStep(type) {
       let isManual = type === "Manual";
-      this.e1 = 2;
+      this.$store.commit('examen/SET_STEP',2)
       this.formTitle = isManual ? "Redactar Examen" : "";
       this.optionName = type;
       this.typeComponent = isManual ? "ExamForm" : "FileForm";
