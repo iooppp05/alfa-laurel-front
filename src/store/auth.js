@@ -77,7 +77,7 @@ export default {
         : null;
     },
     isAdmin(state) {
-      return !!state.roles.some((role) => role.name === "admin");
+      return !!state.roles?.some((role) => role.name === "admin");
     },
   },
 };

@@ -155,7 +155,6 @@ export default {
       this.$gates.setPermissions([]);
       this.$gates.setRoles([]);
       await this.$store.dispatch("auth/logout", null, { root: true });
-      // await this.$router.replace({ name: "Home" }); ya redirecciono desde vuex
     },
     async token_logout() {
       await this.$store.dispatch("auth/token_logout", null, { root: true });
