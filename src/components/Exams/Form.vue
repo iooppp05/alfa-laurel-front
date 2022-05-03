@@ -65,9 +65,7 @@
             @click="cancel"
             >Cancelar</v-btn
           >
-          <v-btn color="primary" tile :loading="loading" @click="submit"
-            >Aceptar</v-btn
-          >
+          <SaveButton/>
         </v-col>
       </v-row>
     </v-container>
@@ -80,6 +78,7 @@ export default {
   props: ["users", "subjects", "loading", "formTitle"],
   components: {
     QuestionsComponent: () => import("./Question.vue"),
+    SaveButton: () => import("./SaveButton.vue"),
   },
   data() {
     return {
