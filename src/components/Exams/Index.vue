@@ -178,12 +178,10 @@
 
 <script>
 import { Examenes } from "@/services/Examenes";
-import { Subjects } from "@/services/Subjects";
-import { Users } from "@/services/Users";
 import snackbar from "@/mixins/snackbar";
 const ExamenesService = new Examenes();
-const SubjectsService = new Subjects();
-const UserService = new Users();
+import { initExamenes } from "@/services/Examenes";
+
 export default {
   mixins: [snackbar],
   name: "Exámenes",
@@ -244,7 +242,7 @@ export default {
       try {
         this.isBtbBlocked = true;
         await ExamenesService.store(data);
-        await this.init();
+        await initExamenes();
         await this.showSnackBar(
           "Exito",
           "Examen agregado correctamente",
@@ -270,7 +268,7 @@ export default {
           await ExamenesService.delete({
             examenId: this.idSelected,
           });
-          await this.init();
+          await initExamenes();
           await this.showSnackBar(
             "Exito",
             "Examen  Eliminada correctamente",
@@ -285,19 +283,6 @@ export default {
             "error"
           );
         }
-    },
-    async init() {
-      let { data } = await ExamenesService.all();
-      let users = await UserService.all();
-      let subjects = await SubjectsService.all();
-      this.subjects = subjects.data.map((item) => {
-        return { value: item.id, text: item.name };
-      });
-      this.users = users.data.map((item) => {
-        return { value: item.id, text: item.name };
-      });
-      this.desserts = data;
-      this.loading = false;
     },
   },
 };
