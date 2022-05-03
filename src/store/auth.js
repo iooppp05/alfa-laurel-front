@@ -1,5 +1,4 @@
 import axios from "axios";
-import router from "@/router";
 
 export default {
   namespaced: true,
@@ -44,17 +43,19 @@ export default {
         commit("SET_TOKEN", null);
       }
     },
-    async logout({ state, commit }) {
+    async logout({ commit }) {
       await axios.post("/logout");
       commit("SET_USER", null);
       commit("SET_LOGGED", false);
       commit("SET_ROLES", null);
       commit("SET_PERMISSIONS", null);
-      if (!state.user) await router.push("/login");
     },
     async token_logout({ commit }) {
-      commit("SET_TOKEN", null);
       commit("SET_USER", null);
+      commit("SET_LOGGED", false);
+      commit("SET_TOKEN", null);
+      commit("SET_ROLES", null);
+      commit("SET_PERMISSIONS", null);
     },
     async me({ commit }) {
       try {
@@ -71,7 +72,9 @@ export default {
   },
   getters: {
     userAvatar(state) {
-      if (state.user) return state.user.name[0] + state.user.paternal_name[0];
+      return state.user
+        ? state.user.name[0] + state.user.paternal_name[0]
+        : null;
     },
     isAdmin(state) {
       return !!state.roles.some((role) => role.name === "admin");
