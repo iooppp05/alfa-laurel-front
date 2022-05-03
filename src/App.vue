@@ -86,7 +86,7 @@
                 Mi cuenta</v-list-item-title
               >
             </v-list-item>
-            <v-list-item @click.stop="logout" link>
+            <v-list-item @click="token_logout" link>
               <v-list-item-title>
                 <v-icon v-text="'mdi-logout'"></v-icon>
                 Salir</v-list-item-title
@@ -159,7 +159,7 @@ export default {
     },
     async token_logout() {
       await this.$store.dispatch("auth/token_logout", null, { root: true });
-      await this.$router.replace({ name: "Home" });
+      await this.$router.replace({ name: "Login" });
     },
   },
 };
