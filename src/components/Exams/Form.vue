@@ -84,7 +84,6 @@ export default {
     return {
       id: 1,
       isBtbBlocked: false,
-      draftQuestions: null,
       dialogRemoveQuestion: false,
     };
   },
@@ -118,19 +117,9 @@ export default {
     },
   },
   methods: {
-    submit: async function () {
-      this.draftQuestions = this.$refs.questionComponent.map((item) => {
-        item.question.options.forEach((option) => {
-          option.is_answer = option.id === item.question.answer;
-        });
-        return item.question;
-      });
-      await this.$emit("create-exam-by-manual", {
-        name: this.name,
-        subject_id: this.subject_id,
-        user_id: this.user_id,
-        questions: this.draftQuestions,
-      });
+    reset(){
+      this.e1 = 1;
+      this.$refs.form.reset();
     },
     addRow() {
       this.id += 1;
