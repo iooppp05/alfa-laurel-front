@@ -117,15 +117,6 @@ export default {
     questions() {
       return this.$store.state.examen.editedItem.questions;
     },
-    reset() {
-      return this.$store.state.examen.resetForm;
-    },
-  },
-  watch: {
-    reset() {
-      console.log("fired 2");
-      this.$refs.form.reset();
-    },
   },
   methods: {
     submit: async function () {
@@ -153,7 +144,7 @@ export default {
     cancel() {
       this.$refs.form.reset();
       this.$store.commit("examen/RESET_FORM");
-      this.$store.commit("examen/CLOSE_UPDATE_DIALOG")
+      this.$store.commit("examen/CLOSE_UPDATE_DIALOG");
     },
   },
 };
