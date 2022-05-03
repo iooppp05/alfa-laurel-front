@@ -168,13 +168,6 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <UpdateButton :id="item.id" />
-        <!--        <v-btn-->
-        <!--          :loading="loading"-->
-        <!--          @click="showDialog('update', )"-->
-        <!--          plain-->
-        <!--        >-->
-        <!--          <v-icon> mdi-update </v-icon>-->
-        <!--        </v-btn>-->
         <v-btn @click="showDialog('delete', item.id)" plain>
           <v-icon> mdi-delete </v-icon>
         </v-btn>
