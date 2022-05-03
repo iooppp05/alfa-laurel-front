@@ -112,6 +112,7 @@
                           :users="users"
                           :subjects="subjects"
                           :loading="isBtbBlocked"
+                          @saved="init"
                           @create-exam-by-file="save"
                           @create-exam-by-manual="save"
                           @closeForm="dialog = !dialog"
@@ -215,14 +216,18 @@ export default {
       desserts: [],
     };
   },
-  async created() {
-    let { examenes, users, subjects } = await initExamenes();
-    this.subjects = subjects;
-    this.users = users;
-    this.desserts = examenes;
-    this.loading = false;
+  created() {
+    this.init()
   },
   methods: {
+   async init(){
+      this.loading = true
+      let { examenes, users, subjects } = await initExamenes();
+      this.subjects = subjects;
+      this.users = users;
+      this.desserts = examenes;
+      this.loading = false;
+    },
     nextStep(type) {
       let isManual = type === "Manual";
       this.$store.commit('examen/SET_STEP',2)
@@ -249,16 +254,13 @@ export default {
           "success"
         );
       } catch (e) {
-        let text = "Desconocido",
-          tag = "Error";
-        if (e.response?.data?.message?.includes("already exists")) {
-          text = "Ya existe";
-          tag = `Role ${data.name}`;
-        }
-        this.showSnackBar(tag, text);
+        this.showSnackBar("Error", e.message);
       } finally {
-        this.dialog = false; //todo
+        this.$store.commit("examen/CLOSE_CREATE_DIALOG")
+        this.$store.commit("examen/RESET_FORM")
+        this.$store.commit("examen/SET_STEP",1)
         this.isBtbBlocked = false;
+        await this.init()
       }
     },
     async deleteSubject() {

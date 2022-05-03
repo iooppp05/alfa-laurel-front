@@ -60,6 +60,7 @@ export default {
   props: ["subjects", "users", "loading"],
   data() {
     return {
+      //todo quitar esto de aqui moverlo al sot
       editedItem: { name: null, user_id: null, subject_id: null, file: null },
     };
   },
