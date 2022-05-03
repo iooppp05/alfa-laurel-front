@@ -147,7 +147,11 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog :value="$store.state.examen.dialogUpdate" fullscreen>
+          <v-dialog
+            @input="$store.commit('examen/CLOSE_UPDATE_DIALOG')"
+            :value="$store.state.examen.dialogUpdate"
+            fullscreen
+          >
             <v-card outlined>
               <v-card-text class="mt-lg-16 mt-md-16">
                 <ExamForm
