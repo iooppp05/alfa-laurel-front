@@ -45,7 +45,7 @@
             block
             large
             color="secondary"
-            @click="$emit('create-exam-by-file', editedItem)"
+            @click="save"
             >Aceptar</v-btn
           >
         </v-col>
@@ -58,6 +58,14 @@
 export default {
   name: "FileForm",
   props: ["subjects", "users", "loading"],
+  methods: {
+    async save() {
+      await this.$emit('create-exam-by-file', this.editedItem)
+      await this.$refs.form.reset()
+      // this.editedItem = { name: null, user_id: null, subject_id: null, file: null }
+
+    }
+  },
   data() {
     return {
       //todo quitar esto de aqui moverlo al sot

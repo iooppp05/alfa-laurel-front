@@ -114,7 +114,6 @@
                           :loading="isBtbBlocked"
                           @saved="init"
                           @create-exam-by-file="save"
-                          @create-exam-by-manual="save"
                           @closeForm="dialog = !dialog"
                           formTitle="Redactar Examen"
                           ref="createExam"
@@ -149,7 +148,7 @@
             </v-card>
           </v-dialog>
           <v-dialog
-            @input="$store.commit('examen/CLOSE_UPDATE_DIALOG')"
+            @input="resetUpdateForm"
             :value="$store.state.examen.dialogUpdate"
             fullscreen
           >
@@ -202,7 +201,6 @@ export default {
       isBtbBlocked: false,
       dialog: false,
       dialogDelete: false,
-      dialogUpdate: false,
       search: null,
       headers: [
         {
@@ -220,6 +218,11 @@ export default {
     this.init()
   },
   methods: {
+    resetUpdateForm(){
+      this.$store.commit("examen/RESET_FORM");
+      this.$store.commit("examen/CLOSE_UPDATE_DIALOG");
+      this.$store.commit("examen/SET_STEP",1);
+    },
    async init(){
       this.loading = true
       let { examenes, users, subjects } = await initExamenes();
@@ -259,6 +262,7 @@ export default {
         this.$store.commit("examen/CLOSE_CREATE_DIALOG")
         this.$store.commit("examen/RESET_FORM")
         this.$store.commit("examen/SET_STEP",1)
+
         this.isBtbBlocked = false;
         await this.init()
       }
