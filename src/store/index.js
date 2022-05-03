@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import auth from "./auth";
 import settings from "./settings";
 import examen from "./examen";
-
+import vuexLocal from "@/plugins/vue-persistence";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -15,4 +15,5 @@ export default new Vuex.Store({
     settings,
     examen,
   },
+  plugins: [vuexLocal.plugin]
 });

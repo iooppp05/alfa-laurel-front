@@ -3,5 +3,5 @@ import VueGates from "vue-gates";
 
 Vue.use(VueGates, {
   superRole: "admin",
-  persistent: true,
+  // persistent: true,
 });
