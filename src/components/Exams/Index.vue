@@ -22,7 +22,11 @@
           <v-toolbar-title>Exámenes</v-toolbar-title>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :value="$store.state.examen.dialog" fullscreen>
+          <v-dialog
+            @input="e1 = 1"
+            :value="$store.state.examen.dialog"
+            fullscreen
+          >
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 + Añadir Examen
