@@ -123,7 +123,7 @@ export default {
             id: 1,
             question: null,
             level: null,
-            number: null,
+            number: 1,
             answer: null,
             options: [
               {
