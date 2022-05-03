@@ -3,6 +3,7 @@ export default {
   state: {
     dialog: false,
     dialogUpdate: false,
+    e1: 1,
     id: 1,
     resetForm: false,
     editedItem: {
@@ -44,6 +45,15 @@ export default {
     },
   },
   mutations: {
+    SET_STEP(state, step) {
+      state.e1 = step;
+    },
+    CLOSE_CREATE_DIALOG(state) {
+      state.dialog = false;
+    },
+    OPEN_CREATE_DIALOG(state) {
+      state.dialog = true;
+    },
     CLOSE_UPDATE_DIALOG(state) {
       state.dialogUpdate = false;
     },
