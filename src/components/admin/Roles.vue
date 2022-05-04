@@ -152,7 +152,7 @@ export default {
     async save() {
       try {
         this.isBtbBlocked = true;
-        this.method === "POST"
+        this.action === "POST"
           ? await RolePermissionsService.setRole(this.editedItem)
           : await RolePermissionsService.updateRole({
               role_id: this.idSelected,
