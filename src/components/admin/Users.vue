@@ -237,21 +237,12 @@
                           </validation-provider>
                         </v-col>
                         <v-col cols="12">
-                          <validation-provider
-                            v-slot="{ errors }"
-                            name="Comentarios"
-                            :rules="{
-                              string: true,
-                            }"
-                          >
                             <v-textarea
                               v-model="editedItem.comments"
                               label="Comentarios"
                               no-resize
                               rows="3"
-                              :error-messages="errors"
                             ></v-textarea>
-                          </validation-provider>
                         </v-col>
                         <v-col cols="12">
                           <validation-provider
