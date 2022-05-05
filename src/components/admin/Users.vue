@@ -25,7 +25,7 @@
           <v-toolbar-title>Usuarios</v-toolbar-title>
           <v-divider class="mx-4" vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" fullscreen>
+          <v-dialog v-model="dialog" fullscreen scrollable>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="primary"
@@ -39,13 +39,15 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
-              </v-card-title>
               <ValidationObserver v-slot="{ invalid }" ref="create-form">
-                <v-card-text>
+                <v-card-text style="height: 90vh;">
                   <v-form ref="form">
                     <v-container>
+                      <v-row>
+                        <v-col>
+                          <h4 class="text-h5">{{ formTitle }}</h4>
+                        </v-col>
+                      </v-row>
                       <v-row>
                         <v-col cols="12" md="6" lg="6" sm="12">
                           <validation-provider
@@ -65,7 +67,7 @@
                         <v-col cols="12" md="6" lg="6" sm="12">
                           <validation-provider
                             v-slot="{ errors }"
-                            name="Apellido Materno"
+                            name="Apellido materno"
                             :rules="{
                               required: true,
                             }"
@@ -109,7 +111,7 @@
                             ></v-text-field>
                           </validation-provider>
                         </v-col>
-                        <v-col cols="12" md="6" lg="6" sm="12">
+                        <v-col cols="12" md="4" lg="4" sm="12">
                           <validation-provider
                             v-slot="{ errors }"
                             name="Contraseña"
@@ -125,7 +127,7 @@
                             ></v-text-field>
                           </validation-provider>
                         </v-col>
-                        <v-col cols="12" md="6" lg="6" sm="12">
+                        <v-col cols="12" md="4" lg="4" sm="12">
                           <validation-provider
                             v-slot="{ errors }"
                             name="Código"
@@ -140,7 +142,7 @@
                             ></v-text-field>
                           </validation-provider>
                         </v-col>
-                        <v-col cols="12" md="6" lg="6" sm="12">
+                        <v-col cols="12" md="4" lg="4" sm="12">
                           <v-dialog
                             ref="dialog"
                             v-model="ModalBirthday"
@@ -189,7 +191,7 @@
                             </v-date-picker>
                           </v-dialog>
                         </v-col>
-                        <v-col cols="12" md="6" lg="6" sm="12">
+                        <v-col cols="12" md="4" lg="4" sm="12">
                           <validation-provider
                             v-slot="{ errors }"
                             name="Dirección"
@@ -204,7 +206,7 @@
                             ></v-text-field>
                           </validation-provider>
                         </v-col>
-                        <v-col cols="12" md="6" lg="6" sm="12">
+                        <v-col cols="12" md="4" lg="4" sm="12">
                           <validation-provider
                             v-slot="{ errors }"
                             name="Teléfono"
@@ -221,7 +223,7 @@
                             ></v-text-field>
                           </validation-provider>
                         </v-col>
-                        <v-col cols="12" md="6" lg="6" sm="12">
+                        <v-col cols="12" md="4" lg="4" sm="12">
                           <validation-provider
                             v-slot="{ errors }"
                             name="Contacto"
@@ -236,62 +238,72 @@
                             ></v-text-field>
                           </validation-provider>
                         </v-col>
-                        <v-col cols="12">
-                            <v-textarea
-                              v-model="editedItem.comments"
-                              label="Comentarios"
-                              no-resize
-                              rows="3"
-                            ></v-textarea>
-                        </v-col>
-                        <v-col cols="12">
+                        <v-col cols="12" md="6" lg="6" sm="12">
                           <validation-provider
-                            v-slot="{ errors }"
-                            name="Rol"
-                            :rules="{
+                              v-slot="{ errors }"
+                              name="Rol"
+                              :rules="{
                               required: true,
                             }"
                           >
                             <v-select
-                              :error-messages="errors"
-                              :items="roles"
-                              v-model="roleSelected"
+                                dense
+                                label="Rol"
+                                :error-messages="errors"
+                                :items="roles"
+                                v-model="roleSelected"
                             >
                             </v-select>
                           </validation-provider>
                         </v-col>
-                        <v-col cols="12">
-                          <v-chip-group
-                            active-class="primary--text"
-                            column
-                            v-if="roleSelected"
-                          >
-                            <v-chip
-                              v-for="permissionRole in permissionsRole"
-                              :key="permissionRole"
-                            >
-                              {{ permissionRole }}
-                            </v-chip>
-                          </v-chip-group>
+                        <v-col cols="12" md="6" lg="6" class="pt-0">
+                          <v-textarea
+                              auto-grow
+                              dense
+                              v-model="editedItem.comments"
+                              label="Comentarios"
+                              rows="1"
+                          ></v-textarea>
+                        </v-col>
+                        <v-col v-show="!!permissionsRole.length" cols="12">
+                          <small>Permisos:</small>
+                          <v-card >
+                            <v-card-text>
+                              <v-chip-group
+                                  active-class="primary--text"
+                                  column
+                                  v-if="roleSelected"
+                              >
+                                <v-chip
+                                    v-for="permissionRole in permissionsRole"
+                                    :key="permissionRole"
+                                >
+                                  {{ permissionRole }}
+                                </v-chip>
+                              </v-chip-group>
+                            </v-card-text>
+                          </v-card>
                         </v-col>
                       </v-row>
                     </v-container>
                   </v-form>
                 </v-card-text>
+                <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="close">
                     Cancelar
                   </v-btn>
                   <v-btn
-                    color="blue darken-1"
-                    :disabled="isBtbBlocked || invalid"
-                    text
-                    :loading="isBtbBlocked"
-                    @click="save"
+                      color="blue darken-1"
+                      :disabled="isBtbBlocked || invalid"
+                      text
+                      :loading="isBtbBlocked"
+                      @click="save"
                   >
                     Guardar
                   </v-btn>
+
                 </v-card-actions>
               </ValidationObserver>
             </v-card>
@@ -321,7 +333,7 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <v-btn @click="showDialog('update', item.id)" plain>
-          <v-icon> mdi-update </v-icon>
+          <v-icon> mdi-pencil </v-icon>
         </v-btn>
         <v-btn @click="showDialog('delete', item.id)" plain>
           <v-icon> mdi-delete </v-icon>

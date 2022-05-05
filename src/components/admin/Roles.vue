@@ -103,7 +103,7 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <v-btn @click="showDialog('update', item.id)" plain>
-          <v-icon> mdi-update </v-icon>
+          <v-icon> mdi-pencil </v-icon>
         </v-btn>
         <v-btn @click="showDialog('delete', item.id)" plain>
           <v-icon> mdi-delete </v-icon>

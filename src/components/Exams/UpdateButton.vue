@@ -1,6 +1,6 @@
 <template>
   <v-btn :loading="loading" @click="show(id)" plain>
-    <v-icon> mdi-update </v-icon>
+    <v-icon>mdi-pencil </v-icon>
   </v-btn>
 </template>
 
