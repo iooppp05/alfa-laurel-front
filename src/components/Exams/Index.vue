@@ -149,12 +149,10 @@
 
 <script>
 import { Examenes } from "@/services/Examenes";
-import snackbar from "@/mixins/snackbar";
 const ExamenesService = new Examenes();
 import { initExamenes } from "@/services/Examenes";
 
 export default {
-  mixins: [snackbar],
   name: "Exámenes",
   components: {
     ExamForm: () => import("@/components/Exams/Form.vue"),
