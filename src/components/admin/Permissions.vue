@@ -97,10 +97,8 @@
 
 <script>
 import { RolesPermissions } from "@/services/RolePermissions";
-import snackbar from "@/mixins/snackbar";
 const RolePermissionsService = new RolesPermissions();
 export default {
-  mixins: [snackbar],
   name: "Permissions",
   data() {
     return {
@@ -148,12 +146,14 @@ export default {
         this.isBtbBlocked = true;
         await RolePermissionsService.setPermission(this.editedItem);
         await this.init();
-        await this.showSnackBar(
-          "Permiso agregado correctamente",
-          "success"
-        );
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "¡Permiso agregado correctamente!",
+          color: this.$vuetify.theme.themes.light.secondary
+        },{ root: true });
       } catch (e) {
-        this.showSnackBar( e.response.data.message);
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "¡No fue posible agregar el permiso!",
+        },{ root: true });
       } finally {
         this.dialog = false;
         this.isBtbBlocked = false;
@@ -168,17 +168,17 @@ export default {
             permissionId: this.idSelected,
           });
           await this.init();
-          await this.showSnackBar(
-            "Permiso Eliminado correctamente",
-            "success"
-          );
+          this.$store.commit("settings/SHOW_SNACKBAR", {
+            text: "¡Permiso Eliminado correctamente!",
+            color: this.$vuetify.theme.themes.light.secondary
+          },{ root: true });
+        } catch (e) {
+          this.$store.commit("settings/SHOW_SNACKBAR", {
+            text: "¡No fue posible eliminar el permiso!",
+          },{ root: true });
+        }finally {
           this.dialogDelete = false;
           this.isBtbBlocked = false;
-        } catch (e) {
-          this.showSnackBar(
-            "No fue posible eliminar el permiso",
-            "error"
-          );
         }
     },
     async init() {
