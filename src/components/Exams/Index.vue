@@ -157,7 +157,8 @@ export default {
   components: {
     ExamForm: () => import("@/components/Exams/Form.vue"),
     FileForm: () => import("@/components/Exams/FileForm.vue"),
-    UpdateButton: () => import("@/components/Exams/UpdateButton"),
+    UpdateButton: () => import("@/components/Exams/UpdateButton.vue"),
+    DeleteButton: () => import("@/components/Exams/DeleteButton.vue"),
   },
   data() {
     return {
@@ -239,29 +240,6 @@ export default {
         this.isBtbBlocked = false;
         await this.init()
       }
-    },
-    async deleteSubject() {
-      if (this.idSelected)
-        try {
-          this.isBtbBlocked = true;
-          await ExamenesService.delete({
-            examenId: this.idSelected,
-          });
-          await initExamenes();
-          await this.showSnackBar(
-            "Exito",
-            "Examen  Eliminada correctamente",
-            "success"
-          );
-          this.dialogDelete = false;
-          this.isBtbBlocked = false;
-        } catch (e) {
-          this.showSnackBar(
-            "Error",
-            "No fue posible eliminar la Examen ",
-            "error"
-          );
-        }
     },
   },
 };
