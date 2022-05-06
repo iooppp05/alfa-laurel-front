@@ -346,7 +346,6 @@
 <script>
 import { Users } from "@/services/Users";
 import { RolesPermissions } from "@/services/RolePermissions";
-import snackbar from "@/mixins/snackbar";
 const UserService = new Users();
 const RolePermissionsService = new RolesPermissions();
 export default {
@@ -355,7 +354,6 @@ export default {
       return roles.map((role) => role.name).join(" | ");
     },
   },
-  mixins: [snackbar],
   name: "usuarios",
   data() {
     return {
@@ -491,16 +489,18 @@ export default {
         }
 
         await this.init();
-        await this.showSnackBar(
-          `Usuario ${isStore ? "agregado" : "actualizado"}   correctamente`,
-          "success"
-        );
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "¡Usuario agregado correctamente!",
+          color: this.$vuetify.theme.themes.light.secondary
+        },{ root: true });
+
         this.dialog = false;
         this.isBtbBlocked = false;
         this.roleSelected = null;
       } catch (e) {
-        let text = e.response.data.message;
-        this.showSnackBar( text);
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "¡No fue posible agregar al usuario!",
+        },{ root: true });
       } finally {
         this.isBtbBlocked = false;
       }
@@ -513,17 +513,17 @@ export default {
             userId: this.idSelected,
           });
           await this.init();
-          await this.showSnackBar(
-            "Usuario Eliminado correctamente",
-            "success"
-          );
+          this.$store.commit("settings/SHOW_SNACKBAR", {
+            text: "¡Usuario Eliminado correctamente!",
+            color: this.$vuetify.theme.themes.light.secondary
+          },{ root: true });
+
           this.dialogDelete = false;
           this.isBtbBlocked = false;
         } catch (e) {
-          this.showSnackBar(
-            "No fue posible eliminar al usuario",
-            "error"
-          );
+          this.$store.commit("settings/SHOW_SNACKBAR", {
+            text: "¡No fue posible eliminar al usuario!",
+          },{ root: true });
         } finally {
           this.isBtbBlocked = false;
         }
