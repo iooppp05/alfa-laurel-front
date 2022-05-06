@@ -115,10 +115,8 @@
 
 <script>
 import { Subjects } from "@/services/Subjects";
-import snackbar from "@/mixins/snackbar";
 const SubjectsService = new Subjects();
 export default {
-  mixins: [snackbar],
   name: "Materias",
   data() {
     return {
@@ -173,16 +171,14 @@ export default {
         this.isBtbBlocked = true;
         await SubjectsService.store(this.editedItem);
         await this.init();
-        await this.showSnackBar(
-          "Materia agregada correctamente",
-          "success"
-        );
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "¡Materia agregada correctamente!",
+          color: this.$vuetify.theme.themes.light.secondary
+        },{ root: true });
       } catch (e) {
-        let text = "Desconocido";
-        if (e.response?.data?.message?.includes("already exists")) {
-          text = "Ya existe";
-        }
-        this.showSnackBar( text);
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "¡No fue posible agregar la materia!",
+        },{ root: true });
       } finally {
         this.dialog = false;
         this.isBtbBlocked = false;
@@ -197,17 +193,17 @@ export default {
             subjectId: this.idSelected,
           });
           await this.init();
-          await this.showSnackBar(
-            "Materia Eliminada correctamente",
-            "success"
-          );
+          this.$store.commit("settings/SHOW_SNACKBAR", {
+            text: "¡Materia eliminada correctamente!",
+            color: this.$vuetify.theme.themes.light.secondary
+          },{ root: true });
+        } catch (e) {
+          this.$store.commit("settings/SHOW_SNACKBAR", {
+            text: "¡No fue posible eliminar la materia!",
+          },{ root: true });
+        }finally {
           this.dialogDelete = false;
           this.isBtbBlocked = false;
-        } catch (e) {
-          this.showSnackBar(
-            "No fue posible eliminar la materia",
-            "error"
-          );
         }
     },
     async init() {
