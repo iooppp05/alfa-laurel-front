@@ -149,12 +149,11 @@ export default {
         await RolePermissionsService.setPermission(this.editedItem);
         await this.init();
         await this.showSnackBar(
-          "Exito",
           "Permiso agregado correctamente",
           "success"
         );
       } catch (e) {
-        this.showSnackBar(`Error`, e.response.data.message);
+        this.showSnackBar( e.response.data.message);
       } finally {
         this.dialog = false;
         this.isBtbBlocked = false;
@@ -170,7 +169,6 @@ export default {
           });
           await this.init();
           await this.showSnackBar(
-            "Exito",
             "Permiso Eliminado correctamente",
             "success"
           );
@@ -178,7 +176,6 @@ export default {
           this.isBtbBlocked = false;
         } catch (e) {
           this.showSnackBar(
-            "Error",
             "No fue posible eliminar el permiso",
             "error"
           );

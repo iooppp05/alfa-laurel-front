@@ -238,12 +238,17 @@ export default {
       this.optionName = type;
       this.typeComponent = isManual ? "ExamForm" : "FileForm";
     },
-    showDialog(name, idSelected = 0) {
-      switch (name) {
-        case "delete":
-          this.dialogDelete = !this.dialogDelete;
-          this.idSelected = idSelected;
-          break;
+    showAlert({success}){
+      if (success) {
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "¡Examen agregado correctamente!",
+          color: this.$vuetify.theme.themes.light.secondary
+        },{ root: true });
+        this.init()
+      }else {
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "No se pudo eliminar el examen"
+        }, { root: true });
       }
     },
     async save(data) {
@@ -252,12 +257,11 @@ export default {
         await ExamenesService.store(data);
         await initExamenes();
         await this.showSnackBar(
-          "Exito",
           "Examen agregado correctamente",
           "success"
         );
       } catch (e) {
-        this.showSnackBar("Error", e.message);
+        this.showSnackBar( e.message);
       } finally {
         this.$store.commit("examen/CLOSE_CREATE_DIALOG")
         this.$store.commit("examen/RESET_FORM")

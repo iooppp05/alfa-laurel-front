@@ -16,20 +16,22 @@ export default {
     ],
   },
   mutations: {
+    CLOSE_SNACKBAR(state){
+      state.snackbar.value = false;
+    },
     TOGGLE_DRAWER(state, status) {
       state.drawerState = status;
     },
     TOGGLE_LOADING(state, loading) {
       state.loading = loading;
     },
-    SHOW_SNACKBAR(state, { value, text, color = "warning", bottom = true }) {
+    SHOW_SNACKBAR(state, { text, value = true, color = "error", bottom = true }) {
       state.snackbar = {
         value,
         text,
         color,
         bottom,
       };
-      setTimeout(() => (state.snackbar.value = false), 3000);
     },
   },
   getters: {

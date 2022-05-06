@@ -161,12 +161,11 @@ export default {
             });
         await this.init();
         await this.showSnackBar(
-          "Exito",
           "Rol agregado correctamente",
           "success"
         );
       } catch (e) {
-        this.showSnackBar(`Error`, e.response.data.message);
+        this.showSnackBar( e.response.data.message);
       } finally {
         this.dialog = false;
         this.isBtbBlocked = false;
@@ -181,14 +180,13 @@ export default {
           });
           await this.init();
           await this.showSnackBar(
-            "Exito",
             "Rol Eliminado correctamente",
             "success"
           );
           this.dialogDelete = false;
           this.isBtbBlocked = false;
         } catch (e) {
-          this.showSnackBar("Error", "No fue posible eliminar el rol", "error");
+          this.showSnackBar( "No fue posible eliminar el rol", "error");
         }
     },
     async init() {

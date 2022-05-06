@@ -104,10 +104,27 @@
         <!-- If using vue-router -->
         <router-view></router-view>
         <v-snackbar
-          :value="$store.state.settings.snackbar.value"
-          :color="$store.state.settings.snackbar.color"
+            multi-line
+            :timeout="5000"
+            content-class="text-center"
+            :value="$store.state.settings.snackbar.value"
+            :color="$store.state.settings.snackbar.color"
+            @input="$store.commit('settings/CLOSE_SNACKBAR')"
         >
+        <span class="text-subtitle-1">
           {{ $store.state.settings.snackbar.text }}
+        </span>
+          <template v-slot:action="{ attrs }">
+            <v-btn
+                color="white"
+                outlined
+
+                v-bind="attrs"
+                @click="$store.commit('settings/CLOSE_SNACKBAR')"
+            >
+              Cerrar
+            </v-btn>
+          </template>
         </v-snackbar>
       </v-container>
     </v-main>

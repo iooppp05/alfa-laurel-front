@@ -174,18 +174,15 @@ export default {
         await SubjectsService.store(this.editedItem);
         await this.init();
         await this.showSnackBar(
-          "Exito",
           "Materia agregada correctamente",
           "success"
         );
       } catch (e) {
-        let text = "Desconocido",
-          tag = "Error";
+        let text = "Desconocido";
         if (e.response?.data?.message?.includes("already exists")) {
           text = "Ya existe";
-          tag = `Role ${this.editedItem.name}`;
         }
-        this.showSnackBar(tag, text);
+        this.showSnackBar( text);
       } finally {
         this.dialog = false;
         this.isBtbBlocked = false;
@@ -201,7 +198,6 @@ export default {
           });
           await this.init();
           await this.showSnackBar(
-            "Exito",
             "Materia Eliminada correctamente",
             "success"
           );
@@ -209,7 +205,6 @@ export default {
           this.isBtbBlocked = false;
         } catch (e) {
           this.showSnackBar(
-            "Error",
             "No fue posible eliminar la materia",
             "error"
           );

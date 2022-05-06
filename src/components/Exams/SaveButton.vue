@@ -37,12 +37,11 @@ export default {
             }
         );
         await this.showSnackBar(
-          "Exito",
           "Examen agregado correctamente",
           "success"
         );
       } catch (e) {
-        this.showSnackBar("Error", e.message);
+        this.showSnackBar( e.message);
       } finally {
         this.$store.commit("examen/CLOSE_CREATE_DIALOG")
         this.$store.commit("examen/RESET_FORM")

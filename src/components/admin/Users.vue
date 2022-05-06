@@ -492,7 +492,6 @@ export default {
 
         await this.init();
         await this.showSnackBar(
-          "Exito",
           `Usuario ${isStore ? "agregado" : "actualizado"}   correctamente`,
           "success"
         );
@@ -500,9 +499,8 @@ export default {
         this.isBtbBlocked = false;
         this.roleSelected = null;
       } catch (e) {
-        let text = e.response.data.message,
-          tag = "Error";
-        this.showSnackBar(tag, text);
+        let text = e.response.data.message;
+        this.showSnackBar( text);
       } finally {
         this.isBtbBlocked = false;
       }
@@ -516,7 +514,6 @@ export default {
           });
           await this.init();
           await this.showSnackBar(
-            "Exito",
             "Usuario Eliminado correctamente",
             "success"
           );
@@ -524,7 +521,6 @@ export default {
           this.isBtbBlocked = false;
         } catch (e) {
           this.showSnackBar(
-            "Error",
             "No fue posible eliminar al usuario",
             "error"
           );
