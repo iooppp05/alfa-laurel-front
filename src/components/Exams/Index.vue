@@ -111,11 +111,7 @@
                           :is="typeComponent"
                           :users="users"
                           :subjects="subjects"
-                          :loading="isBtbBlocked"
                           @saved="init"
-                          @create-exam-by-file="save"
-                          @closeForm="dialog = !dialog"
-                          formTitle="Redactar Examen"
                           ref="createExam"
                         >
                         </component>
