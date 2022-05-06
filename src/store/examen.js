@@ -8,6 +8,7 @@ export default {
     resetForm: false,
     editedItem: {
       name: null,
+      file: null,
       user_id: null,
       subject_id: null,
       questions: [
@@ -45,6 +46,9 @@ export default {
     },
   },
   mutations: {
+    UPDATE_FILE(state,file) {
+      state.editedItem.file = file;
+    },
     SET_STEP(state, step) {
       state.e1 = step;
     },
