@@ -132,9 +132,7 @@
                 <ExamForm
                   :users="users"
                   :subjects="subjects"
-                  :loading="isBtbBlocked"
-                  formTitle="Actualizar examen"
-                  ref="editForm"
+                   ref="editForm"
                 />
               </v-card-text>
             </v-card>
