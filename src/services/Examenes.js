@@ -60,3 +60,6 @@ export async function initExamenes() {
     examenes,
   };
 }
+export async function destroy({ examenId }) {
+  return await axios.delete(`/api/examenes/${examenId}`);
+}
