@@ -4,7 +4,6 @@ export default {
     dialog: false,
     dialogUpdate: false,
     e1: 1,
-    id: 1,
     resetForm: false,
     editedItem: {
       name: null,
