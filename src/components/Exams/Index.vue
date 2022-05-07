@@ -188,12 +188,18 @@ export default {
     this.init()
   },
   methods: {
+    // TODO tratar de mover esto
+    // SIRVE PARA QUE CUANDO DEN "ESCAPE" se se haga un reset de todo
     resetUpdateForm(){
       this.$store.commit("examen/RESET_FORM");
       this.$store.commit("examen/CLOSE_UPDATE_DIALOG");
       this.$store.commit("examen/SET_STEP",1);
     },
-   async init(){
+    ///########################
+    async init(){
+      /*
+      * solo se encarga de la inicialización no de hacer reset en formularios/modelos
+      * */
       this.loading = true
       let { examenes, users, subjects } = await initExamenes();
       this.subjects = subjects;
@@ -207,19 +213,6 @@ export default {
       this.formTitle = isManual ? "Redactar Examen" : "";
       this.optionName = type;
       this.typeComponent = isManual ? "ExamForm" : "FileForm";
-    },
-    showAlert({success}){
-      if (success) {
-        this.$store.commit("settings/SHOW_SNACKBAR", {
-          text: "¡Examen agregado correctamente!",
-          color: this.$vuetify.theme.themes.light.secondary
-        },{ root: true });
-        this.init()
-      }else {
-        this.$store.commit("settings/SHOW_SNACKBAR", {
-          text: "No se pudo eliminar el examen"
-        }, { root: true });
-      }
     },
     async save(data) {
       try {
