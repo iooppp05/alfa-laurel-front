@@ -106,9 +106,41 @@ export default {
     UPDATE_SUBJECT_ID(state, subject_id) {
       state.editedItem.subject_id = subject_id;
     },
-    REMOVE_QUESTION(state) {
-      state.id--;
-      state.editedItem.questions.pop();
+    REMOVE_QUESTION(state, questionID) {
+      let idx = state.editedItem.questions.findIndex((q) =>  q.id == questionID);
+      state.editedItem.questions.splice(idx,1);
+      if (state.editedItem.questions.length === 0) {
+        state.editedItem.questions.push({
+          id: 1,
+          question: null,
+          level: null,
+          number: state.id,
+          answer: null,
+          options: [
+            {
+              id: 1,
+              option: null,
+              is_answer: null,
+              cols: "12",
+              md: "4",
+            },
+            {
+              id: 2,
+              option: null,
+              is_answer: null,
+              cols: "12",
+              md: "4",
+            },
+            {
+              id: 3,
+              option: null,
+              is_answer: null,
+              cols: "10",
+              md: "3",
+            },
+          ],
+        });
+      }
     },
     UPDATE_QUESTION(state, question) {
       state.editedItem.questions.map((q) => {
