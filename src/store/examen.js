@@ -6,6 +6,7 @@ export default {
     e1: 1,
     resetForm: false,
     editedItem: {
+      examen_id: null,
       name: null,
       file: null,
       user_id: null,
