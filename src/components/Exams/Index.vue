@@ -141,7 +141,7 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <UpdateButton :id="item.id" />
-        <DeleteButton :id="item.id" @submitted="showAlert" />
+        <DeleteButton :id="item.id" @submitted="init"/>
       </template>
     </v-data-table>
   </v-card>
