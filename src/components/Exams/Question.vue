@@ -1,9 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="6">
-      <v-text-field
-        :label="`Pregunta-${question.id}`"
-        v-model="question.question"
+      <v-text-field label="Pregunta" v-model="question.question"
       />
     </v-col>
     <v-col cols="12" md="3">
@@ -14,9 +12,9 @@
     </v-col>
     <v-col cols="12">
       <OptionComponent
-        @remove-question="removeQuestion"
         ref="optionComponent"
         :options="options"
+        :questionID="question.id"
         @option-updated="optionUpdated($event)"
       />
     </v-col>
@@ -40,9 +38,6 @@ export default {
   methods: {
     optionUpdated(value) {
       this.question.options = value;
-    },
-    removeQuestion() {
-      this.$emit("remove-question");
     },
   },
   data() {
