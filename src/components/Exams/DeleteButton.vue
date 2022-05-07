@@ -1,7 +1,7 @@
 <template>
   <v-btn  @click="dialog = !dialog" plain>
     <v-icon> mdi-delete </v-icon>
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog v-model="dialog" max-width="450px">
       <v-card >
         <v-card-title class="title grey--text text--darken-1">Se eliminara el examen  ¿Estas de acuerdo?</v-card-title>
         <v-card-actions>
