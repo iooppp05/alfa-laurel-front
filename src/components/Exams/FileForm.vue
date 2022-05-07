@@ -58,7 +58,7 @@
 import { store } from "@/services/Examenes";
 export default {
   name: "FileForm",
-  props: ["subjects", "users",],
+  props: ["subjects", "users"],
   data() {
     return  {
       loading: false,
@@ -69,17 +69,11 @@ export default {
       try {
         this.loading = true;
         await store(this.$store.state.examen.editedItem);
-        this.$emit("saved")
-
-        //todo manejar el guardado por el index
-        // await this.showSnackBar(
-        //     "Examen agregado correctamente",
-        //     "success"
-        // );
+        this.$emit("submitted", {success: true})// dispara showAlert
       } catch (e) {
-        this.showSnackBar( e.message);
+        this.$emit("submitted", {success: false})
       } finally {
-        this.$store.commit("examen/CLOSE_UPDATE_DIALOG")
+        this.$store.commit("examen/CLOSE_CREATE_DIALOG")
         this.$store.commit("examen/RESET_FORM")
         this.$store.commit("examen/SET_STEP",1)
         await this.$refs.form.reset()
