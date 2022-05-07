@@ -38,7 +38,7 @@ export default {
               option: null,
               is_answer: null,
               cols: "10",
-              md: "3",
+              md: "2",
             },
           ],
         },
