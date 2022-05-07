@@ -37,9 +37,16 @@ export default {
       try{
         this.loading = true;
         await destroy({examenId: this.id});
-        this.$emit("submitted", {success: true})
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "Examen eliminado correctamente",
+          color: "success"
+        }, { root: true });
+        this.$emit("submitted",{success: true});
       }catch (e) {
-        this.$emit("submitted", {success: false})
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "No se pudo eliminar el examen"
+        }, { root: true });
+        this.$emit("submitted",{success: false});
       }finally {
         this.loading = false;
         this.dialog = false;
