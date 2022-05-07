@@ -18,32 +18,7 @@
           <v-select label="Profesor" :items="users" v-model="user_id"
         /></v-col>
       </v-row>
-      <v-dialog v-model="dialogRemoveQuestion" max-width="500px">
-        <v-card>
-          <v-card-title class="text-h5"
-            >¿Estas seguro de eliminar la preguta ?</v-card-title
-          >
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="blue darken-1"
-              text
-              @click="dialogRemoveQuestion = false"
-              >Cancel</v-btn
-            >
-            <v-btn
-              color="blue darken-1"
-              :disabled="isBtbBlocked"
-              text
-              @click="removeRow"
-              >Aceptar</v-btn
-            >
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
       <questions-component
-        @remove-question="dialogRemoveQuestion = !dialogRemoveQuestion"
         ref="questionComponent"
         v-for="question in questions"
         :options="question.options"
@@ -79,7 +54,6 @@ export default {
     return {
       id: 1,
       isBtbBlocked: false,
-      dialogRemoveQuestion: false,
     };
   },
   computed: {
