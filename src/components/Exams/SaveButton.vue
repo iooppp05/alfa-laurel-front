@@ -4,12 +4,12 @@
       tile
       :loading="statusButton"
       @click="save"
-  >Aceptar</v-btn
+  >Aceptar test</v-btn
   >
 </template>
 
 <script>
-import { store } from "@/services/Examenes"
+import { store, update } from "@/services/Examenes"
 import snackbar from "@/mixins/snackbar";
 export default {
   mixins: [snackbar],
@@ -23,23 +23,40 @@ export default {
     async save() {
       try {
         this.statusButton = true;
-        await store(
-            {
-              name: this.$store.state.examen.editedItem.name,
-              subject_id: this.$store.state.examen.editedItem.subject_id,
-              user_id: this.$store.state.examen.editedItem.user_id,
-              questions: this.$store.state.examen.editedItem.questions.map((item) => {
-                item.options.forEach((option) => {
-                  option.is_answer = option.id === item.answer;
-                });
-                return item;
-              }),
-            }
-        );
-        await this.showSnackBar(
-          "Examen agregado correctamente",
-          "success"
-        );
+        if (!this.$store.state.examen.dialogUpdate) { //muestra form para actualizar
+          await update(
+              {
+                name: this.$store.state.examen.editedItem.name,
+                subject_id: this.$store.state.examen.editedItem.subject_id,
+                user_id: this.$store.state.examen.editedItem.user_id,
+                questions: this.$store.state.examen.editedItem.questions.map((item) => {
+                  item.options.forEach((option) => {
+                    option.is_answer = option.id === item.answer;
+                  });
+                  return item;
+                }),
+              }
+          )
+        } else { //muestra el form para crear
+          await store(
+              {
+                name: this.$store.state.examen.editedItem.name,
+                subject_id: this.$store.state.examen.editedItem.subject_id,
+                user_id: this.$store.state.examen.editedItem.user_id,
+                questions: this.$store.state.examen.editedItem.questions.map((item) => {
+                  item.options.forEach((option) => {
+                    option.is_answer = option.id === item.answer;
+                  });
+                  return item;
+                }),
+              }
+          );
+          await this.showSnackBar(
+              "Examen agregado correctamente",
+              "success"
+          );
+        }
+
       } catch (e) {
         this.showSnackBar( e.message);
       } finally {
