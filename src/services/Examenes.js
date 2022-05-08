@@ -66,6 +66,13 @@ export async function destroy({ examenId }) {
 export async function deleteExamQuestion({examenID,questionID}) {
   return await axios.post(`/api/examenes/question`,{examenID, questionID});
 }
-export async function update({examenID, data}) {
-  return await axios.post(`/api/examenes/${examenID}`, {data, _method: "PUT"});
+export async function update({examen_id, ...data}) {
+  return await axios.post(`/api/examenes/${examen_id}`, {
+    examen_id,
+    name: data.name,
+    subject_id: data.subject_id,
+    user_id: data.user_id,
+    questions: data.questions,
+    _method: 'PUT'
+  });
 }
