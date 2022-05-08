@@ -132,7 +132,7 @@
                 <ExamForm
                   :users="users"
                   :subjects="subjects"
-                   ref="editForm"
+                   ref="editForm" @saved="init"
                 />
               </v-card-text>
             </v-card>
@@ -219,12 +219,14 @@ export default {
         this.isBtbBlocked = true;
         await ExamenesService.store(data);
         await initExamenes();
-        await this.showSnackBar(
-          "Examen agregado correctamente",
-          "success"
-        );
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "Examen agregado correctamente",
+          color: "success"
+        }, { root: true });
       } catch (e) {
-        this.showSnackBar( e.message);
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "Error al procesar la solicitud",
+        }, { root: true });
       } finally {
         this.$store.commit("examen/CLOSE_CREATE_DIALOG")
         this.$store.commit("examen/RESET_FORM")
