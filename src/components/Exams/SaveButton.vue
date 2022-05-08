@@ -23,20 +23,23 @@ export default {
     async save() {
       try {
         this.statusButton = true;
-        if (!this.$store.state.examen.dialogUpdate) { //muestra form para actualizar
-          await update(
-              {
-                name: this.$store.state.examen.editedItem.name,
-                subject_id: this.$store.state.examen.editedItem.subject_id,
-                user_id: this.$store.state.examen.editedItem.user_id,
-                questions: this.$store.state.examen.editedItem.questions.map((item) => {
-                  item.options.forEach((option) => {
-                    option.is_answer = option.id === item.answer;
-                  });
-                  return item;
-                }),
-              }
-          )
+        if (this.$store.state.examen.dialogUpdate) { //muestra form para actualizar
+          await update({
+              examen_id: this.$store.state.examen.editedItem.examen_id,
+              name: this.$store.state.examen.editedItem.name,
+              subject_id: this.$store.state.examen.editedItem.subject_id,
+              user_id: this.$store.state.examen.editedItem.user_id,
+              questions: this.$store.state.examen.editedItem.questions.map((item) => {
+                item.options.forEach((option) => {
+                  option.is_answer = option.id == item.answer;
+                });
+                return item;
+              }),
+              })
+          this.$store.commit("settings/SHOW_SNACKBAR", {
+            text: "Examen actualizado correctamente",
+            color: "success"
+          }, { root: true });
         } else { //muestra el form para crear
           await store(
               {
