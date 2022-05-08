@@ -10,9 +10,7 @@
 
 <script>
 import { store, update } from "@/services/Examenes"
-import snackbar from "@/mixins/snackbar";
 export default {
-  mixins: [snackbar],
   name: "SaveButton",
   data() {
     return {
@@ -54,16 +52,22 @@ export default {
                 }),
               }
           );
-          await this.showSnackBar(
-              "Examen agregado correctamente",
-              "success"
-          );
+          this.$store.commit("settings/SHOW_SNACKBAR", {
+            text: "Examen agregado correctamente",
+            color: "success"
+          }, { root: true });
         }
 
       } catch (e) {
-        this.showSnackBar( e.message);
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "Error al procesar el examen",
+        }, { root: true });
       } finally {
-        this.$store.commit("examen/CLOSE_CREATE_DIALOG")
+        if (this.$store.state.examen.dialog) {
+          this.$store.commit("examen/CLOSE_CREATE_DIALOG")
+        } else if (this.$store.state.examen.dialogUpdate){
+          this.$store.commit("examen/CLOSE_UPDATE_DIALOG")
+        }
         this.$store.commit("examen/RESET_FORM")
         this.$store.commit("examen/SET_STEP",1)
         this.statusButton = false;
