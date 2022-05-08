@@ -5,6 +5,7 @@ export default {
     dialogUpdate: false,
     e1: 1,
     resetForm: false,
+    extraQuestions:[],
     editedItem: {
       examen_id: null,
       name: null,
@@ -25,6 +26,7 @@ export default {
               is_answer: null,
               cols: "12",
               md: "4",
+              number: 1,
             },
             {
               id: 2,
@@ -32,6 +34,7 @@ export default {
               is_answer: null,
               cols: "12",
               md: "4",
+              number: 2,
             },
             {
               id: 3,
@@ -39,6 +42,7 @@ export default {
               is_answer: null,
               cols: "10",
               md: "2",
+              number: 3,
             },
           ],
         },
@@ -65,40 +69,49 @@ export default {
       state.dialogUpdate = true;
     },
     ADD_QUESTION(state) {
-      state.id++;
+      let lastOne = state.editedItem.questions[state.editedItem.questions.length -1]
       state.editedItem.questions.push({
-        id: state.id,
+        id: null,
         question: null,
         level: null,
-        number: state.id,
+        number: lastOne.number + 1,
         answer: null,
         options: [
           {
             id: 1,
             option: null,
             is_answer: null,
+            question_id: null,
             cols: "12",
             md: "4",
+            number: 1,
           },
           {
             id: 2,
             option: null,
             is_answer: null,
+            question_id: null,
             cols: "12",
             md: "4",
+            number: 2,
           },
           {
             id: 3,
             option: null,
             is_answer: null,
+            question_id: null,
             cols: "10",
             md: "3",
+            number: 3,
           },
         ],
       });
     },
     UPDATE_NAME(state, name) {
       state.editedItem.name = name;
+    },
+    UPDATE_EXAMEN_ID(state, examen_id) {
+      state.editedItem.examen_id = examen_id;
     },
     UPDATE_USER_ID(state, user_id) {
       state.editedItem.user_id = user_id;
@@ -123,6 +136,7 @@ export default {
               is_answer: null,
               cols: "12",
               md: "4",
+              number: 1,
             },
             {
               id: 2,
@@ -130,6 +144,7 @@ export default {
               is_answer: null,
               cols: "12",
               md: "4",
+              number: 2,
             },
             {
               id: 3,
@@ -137,6 +152,7 @@ export default {
               is_answer: null,
               cols: "10",
               md: "3",
+              number: 3,
             },
           ],
         });
