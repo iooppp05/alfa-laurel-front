@@ -184,6 +184,7 @@ export default {
                 is_answer: null,
                 cols: "12",
                 md: "4",
+                number:1,
               },
               {
                 id: 2,
@@ -191,6 +192,7 @@ export default {
                 is_answer: null,
                 cols: "12",
                 md: "4",
+                number:2,
               },
               {
                 id: 3,
@@ -198,6 +200,7 @@ export default {
                 is_answer: null,
                 cols: "10",
                 md: "3",
+                number:3,
               },
             ],
           },

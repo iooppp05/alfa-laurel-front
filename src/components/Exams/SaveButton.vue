@@ -63,10 +63,10 @@ export default {
           text: "Error al procesar el examen",
         }, { root: true });
       } finally {
-        if (this.$store.state.examen.dialog) {
-          this.$store.commit("examen/CLOSE_CREATE_DIALOG")
-        } else if (this.$store.state.examen.dialogUpdate){
-          this.$store.commit("examen/CLOSE_UPDATE_DIALOG")
+        if (this.$store.state.examen.dialog) { //es crear
+          this.$store.commit("examen/CLOSE_CREATE_DIALOG") //cierro le modal
+        } else if (this.$store.state.examen.dialogUpdate){ // esto es actulizar
+          this.$store.commit("examen/CLOSE_UPDATE_DIALOG") //cierro le modal
         }
         this.$store.commit("examen/RESET_FORM")
         this.$store.commit("examen/SET_STEP",1)
