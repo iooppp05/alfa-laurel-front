@@ -72,6 +72,9 @@ export async function update({examen_id, ...data}) {
     name: data.name,
     subject_id: data.subject_id,
     user_id: data.user_id,
+    low: data.low,
+    medium: data.medium,
+    high: data.high,
     questions: data.questions,
     _method: 'PUT'
   });

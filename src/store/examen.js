@@ -12,6 +12,9 @@ export default {
       file: null,
       user_id: null,
       subject_id: null,
+      low: null,
+      medium: null,
+      high:null,
       questions: [
         {
           id: 1,
@@ -50,6 +53,15 @@ export default {
     },
   },
   mutations: {
+    SET_LOW(state, value) {
+      state.editedItem.low = value;
+    },
+    SET_MEDIUM(state, value) {
+      state.editedItem.medium = value;
+    },
+    SET_HIGH(state, value) {
+      state.editedItem.high = value;
+    },
     UPDATE_FILE(state,file) {
       state.editedItem.file = file;
     },
@@ -170,6 +182,9 @@ export default {
         name: null,
         user_id: null,
         subject_id: null,
+        low: null,
+        medium: null,
+        high:null,
         questions: [
           {
             id: 1,

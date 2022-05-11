@@ -27,6 +27,9 @@ export default {
               name: this.$store.state.examen.editedItem.name,
               subject_id: this.$store.state.examen.editedItem.subject_id,
               user_id: this.$store.state.examen.editedItem.user_id,
+              low: this.$store.state.examen.editedItem.low,
+              medium: this.$store.state.examen.editedItem.medium,
+              high: this.$store.state.examen.editedItem.high,
               questions: this.$store.state.examen.editedItem.questions.map((item) => {
                 item.options.forEach((option) => {
                   option.is_answer = option.id == item.answer;
@@ -44,6 +47,9 @@ export default {
                 name: this.$store.state.examen.editedItem.name,
                 subject_id: this.$store.state.examen.editedItem.subject_id,
                 user_id: this.$store.state.examen.editedItem.user_id,
+                low: this.$store.state.examen.editedItem.low,
+                medium: this.$store.state.examen.editedItem.medium,
+                high: this.$store.state.examen.editedItem.high,
                 questions: this.$store.state.examen.editedItem.questions.map((item) => {
                   item.options.forEach((option) => {
                     option.is_answer = option.id === item.answer;

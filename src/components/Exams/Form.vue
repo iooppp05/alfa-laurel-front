@@ -18,6 +18,38 @@
           <v-select label="Profesor" :items="users" v-model="user_id"
         /></v-col>
       </v-row>
+      <v-row>
+        <v-col cols="12">
+          <p class="text-caption">¿Numero de preguntas por nivel?</p>
+        </v-col>
+        <v-col cols="12" md="2" lg="2">
+          <v-text-field
+              outlined
+              dense
+              type="number"
+              label="Nivel bajo"
+              v-model.number="low"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="2" lg="2">
+          <v-text-field
+              outlined
+              dense
+              type="number"
+              label="Nivel medio"
+              v-model.number="medium"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="2" lg="2">
+          <v-text-field
+              outlined
+              dense
+              type="number"
+              label="Nivel alto"
+              v-model.number="high"
+          ></v-text-field>
+        </v-col>
+      </v-row>
       <questions-component
         ref="questionComponent"
         v-for="question in questions"
@@ -80,6 +112,30 @@ export default {
       set(value) {
         this.$store.commit("examen/UPDATE_USER_ID", value);
       },
+    },
+    low: {
+      get() {
+        return this.$store.state.examen.editedItem.low;
+      },
+      set(value) {
+        this.$store.commit("examen/SET_LOW", value)
+      }
+    },
+    medium: {
+      get() {
+        return this.$store.state.examen.editedItem.medium;
+      },
+      set(value) {
+        this.$store.commit("examen/SET_MEDIUM",value)
+      }
+    },
+    high: {
+      get() {
+        return this.$store.state.examen.editedItem.high;
+      },
+      set(value) {
+        this.$store.commit("examen/SET_HIGH",value)
+      }
     },
     questions() {
       return this.$store.state.examen.editedItem.questions;
