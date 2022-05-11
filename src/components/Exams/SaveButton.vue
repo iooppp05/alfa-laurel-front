@@ -4,7 +4,7 @@
       tile
       :loading="statusButton"
       @click="save"
-  >Aceptar test</v-btn
+  >Guardar examen</v-btn
   >
 </template>
 
