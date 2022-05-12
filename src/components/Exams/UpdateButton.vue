@@ -44,6 +44,9 @@ export default {
               this.$store.commit("examen/UPDATE_EXAMEN_ID", data.examen_id);
               this.$store.commit("examen/UPDATE_SUBJECT_ID", data.subject_id);
               this.$store.commit("examen/UPDATE_USER_ID", data.user_id);
+              this.$store.commit("examen/SET_LOW", data.low);
+              this.$store.commit("examen/SET_MEDIUM", data.medium);
+              this.$store.commit("examen/SET_HIGH", data.high);
             })
           })
           .then(() => {

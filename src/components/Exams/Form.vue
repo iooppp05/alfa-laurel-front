@@ -49,6 +49,11 @@
               v-model.number="high"
           ></v-text-field>
         </v-col>
+        <v-col cols="12" class="py-0">
+          <small
+              v-if="$store.getters['examen/totalQuestions']"
+              class="text-caption">Total de preguntas: {{$store.getters['examen/totalQuestions']}}</small>
+        </v-col>
       </v-row>
       <questions-component
         ref="questionComponent"

@@ -226,4 +226,9 @@ export default {
       state.editedItem.questions = questions;
     },
   },
+  getters:{
+    totalQuestions(state){
+        return state.editedItem.questions.length
+    }
+  }
 };
