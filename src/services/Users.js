@@ -16,3 +16,6 @@ export class Users {
     return await axios.post(`/api/users/${userId}`, { data, _method: "PUT" });
   }
 }
+export async function all () {
+    return await axios.get("/api/users");
+}

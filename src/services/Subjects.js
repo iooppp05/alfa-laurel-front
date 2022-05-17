@@ -10,3 +10,6 @@ export class Subjects {
     return await axios.delete(`/api/subjects/${subjectId}`);
   }
 }
+export async function all() {
+  return await axios.get("/api/subjects");
+}
