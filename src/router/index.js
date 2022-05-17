@@ -62,8 +62,9 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+const unauthenticatedRoutes = ['Login','Exam'];
 router.beforeEach((to, from, next) => {
-  if (to.name !== "Login" && !store.state.auth.logged) next({ name: "Login" });
+  if (!unauthenticatedRoutes.includes(to.name) && !store.state.auth.logged) next({ name: "Login" });
   else next();
 });
 export default router;

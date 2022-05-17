@@ -147,7 +147,7 @@ export default {
       return this.$store.getters["auth/userAvatar"];
     },
     authenticated() {
-      return this.$store.state.auth.logged;
+      return (this.$store.state.auth.logged && this.$route.name !== "Exam");
     },
     user() {
       return this.$store.state.auth.user;
