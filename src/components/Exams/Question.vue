@@ -1,14 +1,46 @@
 <template>
   <v-row>
     <v-col cols="12" md="6">
-      <v-text-field label="Pregunta" v-model="question.question"
+      <validation-provider
+          v-slot="{ errors }"
+          name="Pregunta"
+          :rules="{required: true}"
+      >
+      <v-text-field
+          label="Pregunta"
+          v-model="question.question"
+          :error-messages="errors"
       />
+      </validation-provider>
     </v-col>
     <v-col cols="12" md="3">
-      <v-select label="Nivel" :items="levels" v-model="question.level" />
+      <validation-provider
+          v-slot="{ errors }"
+          name="Nivel"
+          :rules="{required: true}"
+      >
+        <v-select
+            label="Nivel"
+            :items="levels"
+            v-model="question.level"
+            :error-messages="errors"
+        />
+      </validation-provider>
     </v-col>
     <v-col cols="12" md="3">
-      <v-select label="Respuesta" :items="answers" v-model="question.answer" />
+      <validation-provider
+          v-slot="{ errors }"
+          name="Respuesta"
+          :rules="{required: true}"
+      >
+        <v-select
+            :error-messages="errors"
+            label="Respuesta"
+            :items="answers"
+            v-model="question.answer"
+        />
+      </validation-provider>
+
     </v-col>
     <v-col cols="12">
       <OptionComponent

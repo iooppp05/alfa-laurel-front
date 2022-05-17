@@ -216,6 +216,7 @@ export default {
     },
     async save(data) {
       try {
+
         this.isBtbBlocked = true;
         await ExamenesService.store(data);
         await initExamenes();

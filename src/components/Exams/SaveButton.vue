@@ -2,6 +2,7 @@
   <v-btn
       color="primary"
       tile
+      :disabled="invalid"
       :loading="statusButton"
       @click="save"
   >Guardar examen</v-btn
@@ -12,6 +13,7 @@
 import { store, update } from "@/services/Examenes"
 export default {
   name: "SaveButton",
+  props: ['invalid'],
   data() {
     return {
       statusButton: false,

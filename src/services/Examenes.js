@@ -39,6 +39,9 @@ export async function store(data) {
     fd.append("user_id", data.user_id);
     fd.append("subject_id", data.subject_id);
     fd.append("name", data.name);
+    fd.append("low", data.low);
+    fd.append("medium", data.medium);
+    fd.append("high", data.high);
   }
   return await axios.post("/api/examenes", data.file ? fd : data, {
     headers: {

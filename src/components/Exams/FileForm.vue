@@ -1,4 +1,5 @@
 <template>
+  <ValidationObserver v-slot="{ invalid }" ref="store-file-exam-form">
   <v-form ref="form">
     <v-container>
       <v-row>
@@ -11,69 +12,120 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-text-field
-            label="Titulo del examen"
-            v-model="name"
-          ></v-text-field>
+          <validation-provider
+              v-slot="{ errors }"
+              name="Titulo del examen"
+              :rules="{required: true}"
+          >
+            <v-text-field
+                label="Titulo del examen"
+                :error-messages="errors"
+                v-model="name"
+            ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="6">
+          <validation-provider
+              v-slot="{ errors }"
+              name="Materia"
+              :rules="{required: true}"
+          >
           <v-select
             label="Materia"
             :items="subjects"
+            :error-messages="errors"
             v-model="subject_id"
           >
           </v-select>
+          </validation-provider>
         </v-col>
         <v-col cols="6">
+          <validation-provider
+              v-slot="{ errors }"
+              name="Profesor"
+              :rules="{required: true}"
+          >
           <v-select
             v-model="user_id"
             label="Profesor"
+            :error-messages="errors"
             :items="users"
           >
           </v-select>
+          </validation-provider>
         </v-col>
         <v-col cols="12">
+          <validation-provider
+              v-slot="{ errors }"
+              name="Archivo"
+              :rules="{required: true}"
+          >
           <v-file-input
             show-size
+            :error-messages="errors"
             accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
             v-model="file"
           ></v-file-input>
+          </validation-provider>
         </v-col>
         <v-col cols="12">
           <p class="text-caption">¿Numero de preguntas por nivel?</p>
         </v-col>
         <v-col cols="12" md="2" lg="2">
+          <validation-provider
+              v-slot="{ errors }"
+              name="Nivel bajo"
+              :rules="{required: true}"
+          >
           <v-text-field
               outlined
+              :error-messages="errors"
               dense
               type="number"
               label="Nivel bajo"
               v-model.number="low"
           ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="12" md="2" lg="2">
+          <validation-provider
+              v-slot="{ errors }"
+              name="Nivel medio"
+              :rules="{required: true}"
+          >
+
           <v-text-field
               outlined
               dense
+              :error-messages="errors"
               type="number"
               label="Nivel medio"
               v-model.number="medium"
           ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="12" md="2" lg="2">
+          <validation-provider
+              v-slot="{ errors }"
+              name="Nivel alto"
+              :rules="{required: true}"
+          >
           <v-text-field
               outlined
               dense
+              :error-messages="errors"
               type="number"
               label="Nivel alto"
               v-model.number="high"
           ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="12">
           <v-btn
             :loading="loading"
             block
             large
+            :disabled="invalid"
             color="secondary"
             @click="save"
             >Cargar examen</v-btn
@@ -82,6 +134,7 @@
       </v-row>
     </v-container>
   </v-form>
+  </ValidationObserver>
 </template>
 
 <script>
@@ -98,15 +151,21 @@ export default {
     async save() {
       try {
         this.loading = true;
+        this.$refs['store-file-exam-form'].validate().then( success => {
+          if (!success) {
+            return;
+          }
+        })
         await store(this.$store.state.examen.editedItem);
-        this.$emit("submitted", {success: true})// dispara showAlert
+        this.$emit("saved", {success: true})// dispara showAlert
+
       } catch (e) {
-        this.$emit("submitted", {success: false})
+        this.$emit("saved", {success: false})
       } finally {
         this.$store.commit("examen/CLOSE_CREATE_DIALOG")
         this.$store.commit("examen/RESET_FORM")
         this.$store.commit("examen/SET_STEP",1)
-        await this.$refs.form.reset()
+        await this.$refs['store-file-exam-form'].reset()
         this.loading = false;
       }
     },
@@ -168,8 +227,6 @@ export default {
         this.$store.commit("examen/SET_HIGH",value)
       }
     },
-
-
   },
 };
 </script>

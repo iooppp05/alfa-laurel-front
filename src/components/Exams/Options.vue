@@ -6,10 +6,17 @@
       :cols="option.cols"
       :md="option.md"
     >
+      <validation-provider
+          v-slot="{ errors }"
+          :name="`Opción-${index + 1}`"
+          :rules="{required: true}"
+      >
       <v-text-field
         :label="`Opción-${index + 1}`"
         v-model="option.option"
+        :error-messages="errors"
       ></v-text-field>
+      </validation-provider>
     </v-col>
     <v-col cols="1" md="1" class="align-center d-flex">
       <v-btn

@@ -1,5 +1,6 @@
 <template>
-  <v-form ref="form">
+  <ValidationObserver v-slot="{ invalid }" ref="store-exam-form">
+    <v-form ref="form">
     <v-container>
       <v-row>
         <v-col>
@@ -9,45 +10,98 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <v-text-field label="Titulo del examen" v-model="name"></v-text-field
-        ></v-col>
+          <validation-provider
+              v-slot="{ errors }"
+              name="Nombre"
+              :rules="{required: true}"
+          >
+            <v-text-field
+                label="Titulo del examen"
+                v-model="name"
+                :error-messages="errors"
+            ></v-text-field>
+          </validation-provider>
+        </v-col>
         <v-col cols="4">
-          <v-select label="Materia" :items="subjects" v-model="subject_id"
-        /></v-col>
+          <validation-provider
+              v-slot="{ errors }"
+              name="Materia"
+              :rules="{required: true}"
+          >
+          <v-select
+              label="Materia"
+              :items="subjects"
+              v-model="subject_id"
+              :error-messages="errors"
+          />
+          </validation-provider>
+        </v-col>
         <v-col cols="4">
-          <v-select label="Profesor" :items="users" v-model="user_id"
-        /></v-col>
+          <validation-provider
+              v-slot="{ errors }"
+              name="Profesor"
+              :rules="{required: true}"
+          >
+          <v-select
+              label="Profesor"
+              :items="users"
+              :error-messages="errors"
+              v-model="user_id"/>
+          </validation-provider>
+        </v-col>
       </v-row>
       <v-row>
         <v-col cols="12">
           <p class="text-caption">¿Numero de preguntas por nivel?</p>
         </v-col>
         <v-col cols="12" md="2" lg="2">
+          <validation-provider
+              v-slot="{ errors }"
+              name="Nivel bajo"
+              :rules="{required: true}"
+          >
           <v-text-field
+              :error-messages="errors"
               outlined
               dense
               type="number"
               label="Nivel bajo"
               v-model.number="low"
           ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="12" md="2" lg="2">
+          <validation-provider
+              v-slot="{ errors }"
+              name="Nivel medio"
+              :rules="{required: true}"
+          >
           <v-text-field
               outlined
+              :error-messages="errors"
               dense
               type="number"
               label="Nivel medio"
               v-model.number="medium"
           ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="12" md="2" lg="2">
+          <validation-provider
+              v-slot="{ errors }"
+              name="Nivel alto"
+              :rules="{required: true}"
+          >
+
           <v-text-field
               outlined
+              :error-messages="errors"
               dense
               type="number"
               label="Nivel alto"
               v-model.number="high"
           ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="12" class="py-0">
           <small
@@ -71,11 +125,12 @@
         <v-col class="d-flex justify-end">
           <CancelButton @reset-form="$refs.form.reset()"/>
 <!--          todo refactor saved-->
-          <SaveButton @saved="saved"/>
+          <SaveButton :invalid="invalid" @saved="saved"/>
         </v-col>
       </v-row>
     </v-container>
   </v-form>
+  </ValidationObserver>
 </template>
 
 <script>
@@ -148,7 +203,11 @@ export default {
   },
   methods: {
     saved() {
-      this.$emit('saved')
+      this.$refs['store-exam-form'].validate().then(success => {
+        if(success) {
+          this.$emit('saved')
+        }
+      })
     },
     reset(){
       this.e1 = 1;
