@@ -28,6 +28,7 @@
                           maxlength="6"
                           filled
                           outlined
+                          v-model="examRequest.student_code"
                       >
 
                       </v-text-field>
@@ -114,7 +115,7 @@
                            <p class="grid-item-1 text-subtitle-2 font-weight-medium text-capitalize">Materia: {{ subjectSelected[0].text }}</p>
                            <p class="grid-item-2 text-subtitle-2 font-weight-medium text-capitalize">Examen: {{examenSelected[0].text}}</p>
                            <p class="grid-item-3 text-subtitle-2 font-weight-medium text-capitalize">nombre del alumno: {{examRequest.student_name}} </p>
-                           <p class="grid-item-4 text-subtitle-1 font-weight-medium text-capitalize">Tiempo restante</p>
+                           <p class="grid-item-4 text-subtitle-1 font-weight-medium text-capitalize">Tiempo restante: {{examRequest.minutes_assigns}} </p>
                          </section>
                        </v-card-title>
                        <v-card-text>
@@ -167,14 +168,16 @@ export default {
       },
       disabledButton: false,
       teacher_code: null,
+      questionRequest:[],
       examRequest:{
-        user_id: null,
         subject_id: null,
         exam_id: null,
+        user_id: null,
         minutes_assigns: null,
         minutes: null,
         student_code: null,
         student_name: null,
+        answers_details: [],
       },
       users: [],
       subjects: [],
@@ -182,6 +185,45 @@ export default {
         loading: false,
         values: []
       },
+    }
+  },
+  watch:{
+    questions:{
+      deep:true,
+      handler(values) {
+      if (!this.questionRequest.length) {
+        values.map((value, index)=>{
+          // console.log(value)
+          this.questionRequest.push(
+              {
+                "answer_id": index+1,
+                "question_id":null,
+                "number":null,
+                "question": null,
+                "option1":null,
+                "option2":null,
+                "option3":null,
+                "level":null,
+                "answer":null
+              }
+          )
+        })
+      }
+      else {
+        values.map((value,index) => {
+          console.log(value)
+          this.questionRequest[index].question_id = value.options[0].question_id;
+          this.questionRequest[index].number = value.question_number; // en numero de la pregunta en el examen
+          this.questionRequest[index].question = value.question; // en numero de la pregunta en el examen
+          this.questionRequest[index].option1 = value.options[0].option;
+          this.questionRequest[index].option2 = value.options[1].option;
+          this.questionRequest[index].option3 = value.options[2].option;
+          this.questionRequest[index].level = value.level
+          this.questionRequest[index].answer = value.answer
+      })
+      }
+
+      }
     }
   },
   created(){
@@ -235,16 +277,19 @@ export default {
       try{
         let { data } = await axios.get(`/api/exam/${this.examRequest.exam_id}`)
         let { low, medium, high } =  this.getRandomExam({
-          low:data.data.low,
-          medium:data.data.medium,
-          high:data.data.high,
+          low: data.data.low,
+          medium: data.data.medium,
+          high: data.data.high,
           splitQuestions: this.splitQuestionsByLevel(data.data.questions)})
+        this.examRequest.minutes_assigns = data.data.minutes
         let exam = low.concat(medium).concat(high)
         let amount = exam.length
         exam = this.getRandomQuestions({amount, questions:low.concat(medium).concat(high)})
         this.questions = exam.map(exam_questions_options => {
           return {
-            question:exam_questions_options.question,
+            level: exam_questions_options.level,
+            question_number: exam_questions_options.number,
+            question: exam_questions_options.question,
             options: exam_questions_options.options,
             answer: null
           }
@@ -273,6 +318,7 @@ export default {
       return splitQuestions
     },
     getRandomExam({low, medium, high, splitQuestions}) {
+
       return {
         low: this.getRandomQuestions({amount: low, questions: splitQuestions.low}),
         medium: this.getRandomQuestions({amount: medium, questions: splitQuestions.medium}),
@@ -280,12 +326,13 @@ export default {
       }
     },
     getRandomQuestions({amount, questions}) {
-      let index = 0;
       let randomQuestions = []
       do {
-        randomQuestions.push( questions[Math.floor(Math.random() * questions.length)])
-        index++;
-      }while (index < amount)
+        let question = questions[Math.floor(Math.random() * questions.length)];
+        if (randomQuestions.findIndex(rq => rq.id === question.id) === -1) {
+          randomQuestions.push( question)
+        }
+      }while (!(randomQuestions.length === amount))
       return randomQuestions
     }
   }
