@@ -126,24 +126,39 @@
                                </v-col>
                              </v-row>
                              <v-row>
-                              <v-col cols="12" v-for="question in questions" :key="question.id">
-                                <v-divider></v-divider>
-                                <p class="text-capitalize text-subtitle-1">{{ question.question }}</p>
+                              <v-col cols="12"
+                                     v-for="(question,index) in questions"
+                                     :key="question.id"
+                                     :class="[index % 2 === 0 ? 'grey lighten-4': '']"
+                              >
+
+                                <p class="text-uppercase text-subtitle-1 font-weight-bold">{{index + 1}}.- {{ question.question }}</p>
                                 <v-radio-group
                                     v-model="question.answer"
                                     row
-                                    v-for="option in question.options" :key="option.option"
                                 >
                                   <v-radio
+                                      class="mr-auto "
+                                      v-for="option in question.options" :key="option.option"
                                       :value="option.option"
                                       :label="option.option"></v-radio>
                                 </v-radio-group>
-                                <v-divider></v-divider>
                               </v-col>
                              </v-row>
                            </v-container>
                          </v-form>
                        </v-card-text>
+                       <v-card-actions>
+                         <v-btn
+                             outlined
+                             color="secondary"
+                             block
+                             :loading="loading"
+                             @click="store"
+                         >
+                           Aceptar
+                         </v-btn>
+                       </v-card-actions>
                      </v-card>
                     </v-col>
                   </v-row>
@@ -160,6 +175,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      loading: false,
       questions:[],
       answers:[],
       showCard:1,
@@ -174,7 +190,7 @@ export default {
         exam_id: null,
         user_id: null,
         minutes_assigns: null,
-        minutes: null,
+        minutes: 45,
         student_code: null,
         student_name: null,
         answers_details: [],
@@ -257,6 +273,19 @@ export default {
         this.getExam()
       }
 
+    },
+    async store() {
+      try {
+        this.loading = true;
+        let respuestas = this.examRequest
+        respuestas.answers_details = this.questionRequest;
+        let {data} =  await axios.post('/api/respuestas', respuestas)
+        console.log(data)
+      }catch(e) {
+        console.error(e.message)
+      }finally {
+        this.loading = false;
+      }
     },
     async getExams() {
       try{
