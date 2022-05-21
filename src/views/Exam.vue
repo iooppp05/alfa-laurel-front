@@ -227,7 +227,7 @@ export default {
       }
       else {
         values.map((value,index) => {
-          console.log(value)
+          let [number_answer] = value.options.filter(option => option.option === value.answer) //numero de la opción 1|2|3
           this.questionRequest[index].question_id = value.options[0].question_id;
           this.questionRequest[index].number = value.question_number; // en numero de la pregunta en el examen
           this.questionRequest[index].question = value.question; // en numero de la pregunta en el examen
@@ -236,6 +236,7 @@ export default {
           this.questionRequest[index].option3 = value.options[2].option;
           this.questionRequest[index].level = value.level
           this.questionRequest[index].answer = value.answer
+          this.questionRequest[index].number_answer = number_answer?.number
       })
       }
 
