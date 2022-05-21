@@ -10,12 +10,16 @@ export default {
       color: "warning",
       bottom: true,
     },
+    dialog:false,
     links: [
       { text: "Materias", icon: "mdi-bookshelf", to: "/materias" },
       { text: "Exámenes", icon: "mdi-file-multiple-outline", to: "/examenes" },
     ],
   },
   mutations: {
+    TOGGLE_DIALOG(state, value) {
+      state.dialog = value;
+    },
     CLOSE_SNACKBAR(state){
       state.snackbar.value = false;
     },

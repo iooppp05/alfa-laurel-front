@@ -153,10 +153,9 @@
                              outlined
                              color="secondary"
                              block
-                             :loading="loading"
-                             @click="store"
+                             @click="$store.commit('settings/TOGGLE_DIALOG',true)"
                          >
-                           Aceptar
+                           Terminar
                          </v-btn>
                        </v-card-actions>
                      </v-card>
@@ -167,14 +166,23 @@
             </v-sheet>
           </transition>
         </v-col>
+        <dialog-component
+            :message="'¿Terminar Examen?'"
+            :loading="loading"
+            @store="store"
+        ></dialog-component>
       </v-row>
     </v-container>
 </template>
 <script>
 import axios from "axios";
 export default {
+  components:{
+    DialogComponent: () => import('@/components/shared/Dialog.vue')
+  },
   data() {
     return {
+      dialog: false,
       loading: false,
       questions:[],
       answers:[],
@@ -286,6 +294,13 @@ export default {
         console.error(e.message)
       }finally {
         this.loading = false;
+        this.$store.commit('settings/TOGGLE_DIALOG',false)
+        this.$store.commit("settings/SHOW_SNACKBAR", {
+          text: "Su Examen ha sido guardado correctamente",
+          color: "success"
+        }, { root: true });
+        setTimeout(()=> window.location.reload(),3000)
+
       }
     },
     async getExams() {
